@@ -9,8 +9,7 @@ RUN apk add --no-cache \
     rm -rf /var/www/* && \
     chown -R www:www /var/lib/nginx && \
     chown -R www:www /var/www && \
-    chown -R www:www /var/tmp/nginx/ && \
-    openssl req -newkey rsa:4096 -x509 -keyout /etc/ssl/private/faction-self-signed.key -out /etc/ssl/certs/faction-self-signed.pem -days 365 -nodes -subj "/C=''/ST=''/L=''/O=''/OU=''/CN=''"
+    chown -R www:www /var/tmp/nginx/
 
 
 # Create app directory
