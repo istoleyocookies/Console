@@ -261,8 +261,8 @@ export default {
           'AgentTypeFormat': this.newPayloadAgentTypeFormat,
           'TransportId': this.newPayloadTransport.Id,
           'AgentTransportId': this.newPayloadTransport.AgentTransportId,
-          'BeaconInterval': this.newPayloadBeaconInterval,
-          'Jitter': this.newPayloadJitter,
+          'BeaconInterval': parseInt(this.newPayloadBeaconInterval),
+          'Jitter': parseFloat(this.newPayloadJitter),
           'ExpirationDate': expirationDate
         })
       this.proccessing = false
@@ -304,11 +304,11 @@ export default {
     },
     clearNewPayloadValues () {
       this.newPayloadAgentTypeFormat = null
-      this.newPayloadAgentTransportType = null
+      this.newPayloadTransport = null
       this.newPayloadDescription = null
       this.newPayloadAgentType = null
-      this.newPayloadBeaconInterval = null
-      this.newPayloadJitter = null
+      this.newPayloadBeaconInterval = 5
+      this.newPayloadJitter = 0
       this.newPayloadExpirationDate = null
     },
     closeNewPayloadWindow () {

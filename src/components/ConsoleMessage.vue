@@ -95,7 +95,6 @@ export default {
   }
 
   .response-row td {
-    max-width: 300px;
     word-wrap: break-word;
     border-bottom-color: #333333;
   }
