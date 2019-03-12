@@ -77,7 +77,8 @@
             </b-table-column>
 
             <b-table-column field='Download' label='Download'>
-              <a :href="apiEndpoint + '/payload/' + props.row.Id + '/file/'">
+              <!-- We thrown the name on the end of this link to bust caching -->
+              <a :href="apiEndpoint + '/payload/' + props.row.Id + '/file/' + '?' + props.row.Name">
                 <button :disabled="!props.row.Built" class="button is-information">
                   <b-icon icon="download"></b-icon>
                 </button>
