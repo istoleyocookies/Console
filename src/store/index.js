@@ -175,8 +175,11 @@ const agents = {
         agent.Visible = agentUpdated.Agent.Visible
         state.updated = Date.now()
         state.agentNotification = agent
-      } else {
-        console.log('Couldn not find agent')
+      } else {        
+        state.list.push(agentUpdated.Agent)
+        state.updated = Date.now()
+        state.notificationType = 'connected'
+        state.agentNotification = agentObject
       }
     },
     updateCurrentAgent: (state, agentId) => {
