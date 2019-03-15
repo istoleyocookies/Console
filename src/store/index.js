@@ -175,11 +175,11 @@ const agents = {
         agent.Visible = agentUpdated.Agent.Visible
         state.updated = Date.now()
         state.agentNotification = agent
-      } else {        
+      } else {
         state.list.push(agentUpdated.Agent)
         state.updated = Date.now()
         state.notificationType = 'connected'
-        state.agentNotification = agentObject
+        state.agentNotification = agentUpdated
       }
     },
     updateCurrentAgent: (state, agentId) => {
