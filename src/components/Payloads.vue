@@ -131,7 +131,7 @@
                         v-for="format in newPayloadAgentType.Formats"
                         :value="format.Id"
                         :key="format.Id">
-                        {{ format.Description }}
+                        {{ format.Name }}
                       </option>
                     </b-select>
                 </b-field>
