@@ -209,6 +209,11 @@
                         </button>
                       </b-datepicker>
                   </b-field>
+                  <b-field label="Debug">
+                      <b-switch
+                        v-model="newPayloadDebug">
+                      </b-switch>
+                  </b-field>
                 </div>
               </div>
             </section>
@@ -246,6 +251,7 @@ export default {
       newPayloadBeaconInterval: 5,
       newPayloadJitter: 0,
       newPayloadExpirationDate: null,
+      newPayloadDebug: false,
       isHelpActive: false,
       query: null
     }
@@ -316,7 +322,8 @@ export default {
           'AgentTypeConfigurationId': this.newPayloadConfiguration.Id,
           'BeaconInterval': parseInt(this.newPayloadBeaconInterval),
           'Jitter': parseFloat(this.newPayloadJitter),
-          'ExpirationDate': expirationDate
+          'ExpirationDate': expirationDate,
+          'Debug': this.newPayloadDebug
         })
       this.proccessing = false
       this.closeNewPayloadWindow()
