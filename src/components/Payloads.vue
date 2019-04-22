@@ -42,16 +42,28 @@
               {{ props.row.Name }}
             </b-table-column>
 
-            <b-table-column field="AgentType.Name" label="Agent Type" sortable>
+            <b-table-column field="AgentType.Name" label="Type" sortable>
               {{ props.row.AgentType.Name }}
             </b-table-column>
 
-            <b-table-column field="Transport.Description" label="Transport" sortable>
-              {{ props.row.Transport.Description }}
+            <b-table-column field="Transport.Name" label="Transport" sortable>
+              {{ props.row.Transport.Name }}
             </b-table-column>
 
-            <b-table-column field="Format.Description" label="Format" sortable>
-              {{ props.row.Format.Description }}
+            <b-table-column field="OperatingSystem.Name" label="OS" sortable>
+              {{ props.row.OperatingSystem.Name }}
+            </b-table-column>
+
+            <b-table-column field="Architecture.Name" label="Arch" sortable>
+              {{ props.row.Architecture.Name }}
+            </b-table-column>
+
+            <b-table-column field="Configuration.Name" label="Configuration" sortable>
+              {{ props.row.Configuration.Name }}
+            </b-table-column>
+
+            <b-table-column field="Format.Name" label="Format" sortable>
+              {{ props.row.Format.Name }}
             </b-table-column>
 
             <b-table-column field="BeaconInterval" label="Beacon Interval" sortable>
@@ -173,7 +185,7 @@
                         v-for="transport in newPayloadAgentType.AvailableTransports"
                         :value="transport"
                         :key="transport.Id">
-                        {{ transport.Description }}
+                        {{ transport.Name }}
                       </option>
                     </b-select>
                   </b-field>

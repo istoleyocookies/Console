@@ -36,8 +36,8 @@
             {{ props.row.Name }}
         </b-table-column>
 
-        <b-table-column field='Description' label='Description' sortable>
-            {{ props.row.Description }}
+        <b-table-column field='TransportType' label='Type' sortable>
+            {{ props.row.TransportType }}
         </b-table-column>
 
         <b-table-column field='ApiKeyName' label='API Key Name' sortable>
@@ -74,8 +74,8 @@
           <p class="modal-card-title">New Transport</p>
         </header>
         <section class="modal-card-body">
-          <b-field label="Description">
-            <b-input placeholder="Description" v-model="newTransportDescription">
+          <b-field label="Name">
+            <b-input placeholder="Name" v-model="newTransportName">
             </b-input>
           </b-field>
         </section>
@@ -93,8 +93,8 @@
         <p>
 <pre class="is-paddingless">
 <strong>Transport ID:</strong> {{ this.newTransportId }}
-<strong>Name:</strong> {{ this.newTransportApiName }}
-<strong>Secret:</strong> {{ this.newTransportApiSecret }}
+<strong>API Key Name:</strong> {{ this.newTransportApiName }}
+<strong>API Secret:</strong> {{ this.newTransportApiSecret }}
 </pre>
         </p>
       </section>
@@ -120,7 +120,7 @@ export default {
       query: null,
       isHelpActive: false,
       isNewTransportModalActive: false,
-      newTransportDescription: null
+      newTransportName: null
     }
   },
   computed: {
@@ -194,7 +194,7 @@ export default {
       this.processing = true
       this.$socket.emit('newTransport',
         {
-          'Description': this.newTransportDescription
+          'Name': this.newTransportName
         })
       this.proccessing = false
       this.closeNewTransportWindow()
