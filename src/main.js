@@ -38,9 +38,7 @@ Vue.filter('formatDateTime', function (date) {
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
   router,
-  components: {App},
-  template: '<App/>',
-  store
-})
+  store,
+  render: h => h(App)
+}).$mount('#app')

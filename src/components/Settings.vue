@@ -234,7 +234,7 @@ export default {
       this.processing = true
       if (this.currentPassword && this.newPassword === this.confirmPassword) {
         axios.defaults.withCredentials = true
-        axios.post((process.env.API_ENDPOINT + '/user/' + this.userId + '/password/'),
+        axios.post((process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/password/'),
           {
             'CurrentPassword': this.currentPassword,
             'NewPassword': this.newPassword
@@ -259,7 +259,7 @@ export default {
     getApiKeys () {
       this.processing = true
       axios.defaults.withCredentials = true
-      axios.get((process.env.API_ENDPOINT + '/user/' + this.userId + '/apikeys/')
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikeys/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {
@@ -274,7 +274,7 @@ export default {
     newApiKey () {
       this.processing = true
       axios.defaults.withCredentials = true
-      axios.post((process.env.API_ENDPOINT + '/user/' + this.userId + '/apikeys/')
+      axios.post((process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikeys/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {
@@ -293,7 +293,7 @@ export default {
     },
     deleteApiKey (apiKeyId) {
       axios.defaults.withCredentials = true
-      axios.delete((process.env.API_ENDPOINT + '/user/' + this.userId + '/apikeys/' + apiKeyId + '/')
+      axios.delete((process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikeys/' + apiKeyId + '/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {
@@ -314,7 +314,7 @@ export default {
     },
     getUsers () {
       axios.defaults.withCredentials = true
-      axios.get((process.env.API_ENDPOINT + '/user/')
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/user/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {
@@ -330,7 +330,7 @@ export default {
       if (this.newUserPassword === this.newUserConfirmPassword) {
         this.processing = true
         axios.defaults.withCredentials = true
-        axios.post((process.env.API_ENDPOINT + '/user/'),
+        axios.post((process.env.VUE_APP_API_ENDPOINT + '/user/'),
           {
             'Username': this.newUserName,
             'RoleName': this.newUserRole,
@@ -356,7 +356,7 @@ export default {
     },
     deleteUser (userId) {
       axios.defaults.withCredentials = true
-      axios.delete((process.env.API_ENDPOINT + '/user/' + userId + '/')
+      axios.delete((process.env.VUE_APP_API_ENDPOINT + '/user/' + userId + '/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {
@@ -379,7 +379,7 @@ export default {
     },
     getUserRoles () {
       axios.defaults.withCredentials = true
-      axios.get((process.env.API_ENDPOINT + '/user/role/')
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/user/role/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {

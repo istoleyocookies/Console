@@ -14,10 +14,10 @@
 
 <script>
 import Navbar from './components/Navbar'
-import Footer from './components/Footer'
 import { mapState } from 'vuex'
-console.log(process.env.API_ENDPOINT)
-console.log(process.env.SOCKETIO_ENDPOINT)
+console.log('NodeJS Environment Setting: ' + process.env.NODE_ENV)
+console.log('API Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
+console.log('SocketIO Endpoint: ' + process.env.VUE_APP_SOCKETIO_ENDPOINT)
 export default {
   name: 'App',
   data () {
@@ -26,8 +26,7 @@ export default {
     }
   },
   components: {
-    appNavbar: Navbar,
-    appFooter: Footer
+    appNavbar: Navbar
   },
   computed: {
     ...mapState({
@@ -47,7 +46,7 @@ export default {
       if (this.connected) {
         this.connectionError = false
         console.log('Connected. Getting Agents.')
-        this.$socket.emit('getAgent', {AgentId: 'all'})
+        this.$socket.emit('getAgent', { AgentId: 'all' })
         this.$toast.open({
           message: 'Connected to Faction!',
           type: 'is-success',
@@ -68,7 +67,7 @@ export default {
         actionText: actiontext,
         queue: false,
         onAction: () => {
-          this.$router.push({ name: 'console', params: {AgentId: this.agentNotification.Id} })
+          this.$router.push({ name: 'console', params: { AgentId: this.agentNotification.Id } })
         }
       })
     },
@@ -91,7 +90,7 @@ export default {
         queue: false,
         type: 'is-danger',
         onAction: () => {
-          this.$router.push({ name: 'errorMessage', params: {ErrorMessageId: this.newErrorMessage.Id} })
+          this.$router.push({ name: 'errorMessage', params: { ErrorMessageId: this.newErrorMessage.Id } })
         }
       })
     }

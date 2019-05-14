@@ -78,7 +78,7 @@ export default {
       error: false,
       message: null,
       processing: false,
-      apiEndpoint: process.env.API_ENDPOINT,
+      apiEndpoint: process.env.VUE_APP_API_ENDPOINT,
       isHelpActive: false,
       isInitial: true,
       isSaving: false,
@@ -127,7 +127,7 @@ export default {
         formData.append('files', file)
       }
       axios.defaults.withCredentials = true
-      axios.post((process.env.API_ENDPOINT + '/file/'),
+      axios.post((process.env.VUE_APP_API_ENDPOINT + '/file/'),
         formData,
         {
           headers: {
