@@ -21,9 +21,16 @@ WORKDIR /app
 COPY . .
 COPY ./docker_build/nginx.conf /etc/nginx/nginx.conf
 
-RUN npm install --only=production && npm run build && \
+RUN npm install && npm run build && \
     cp -R /app/dist/* /var/www/ && \
-    chmod +x ./wait-for-it.sh
+    rm -rf /app/node_modules && \
+    rm -rf /app/dist && \
+    rm -rf /app/docker_build && \
+    rm -rf *.json && \
+    rm -rf *.js && \
+    rm -rf Dockerfile && \
+    rm -rf CODE_OF_CONDUCT.md && \
+    chmod +x ./wait-for-it.sh 
 
 EXPOSE 443
 

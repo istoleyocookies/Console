@@ -1,30 +1,16 @@
-# faction-console
+# Faction C2 Console
 
-> Console for Faction C2 Framework
+This is the web interface for Faction C2. It is built using [Vue](https://vuejs.org/)
 
-## Build Setup
+## Installing and Running
+This is installed by default through the stanard [Faction Install Process](https://www.factionc2.com/docs/#installing-faction). You should only have to manually install this if you'd like to modify it.
 
-``` bash
-# install dependencies
-npm install
+To install this manually:
 
-# serve with hot reload at localhost:8080
-npm run dev
+1. Clone the repo
+2. `npm install`
+3. `npm run serve`
 
-# build for production with minification
-npm run build
+This will start up a development server running the console
 
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+By default, in a development environment, the console expects to be able to contact the API at http://localhost:5000/api/v1/, which means you'll have to run the API locally. If you'd like to change this behavior, edit the `.env.development` file.

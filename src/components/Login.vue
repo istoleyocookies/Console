@@ -33,7 +33,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import axios from 'axios'
-console.log('Endpoint: ' + process.env.API_ENDPOINT)
+console.log('Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
 export default {
   data () {
     return {
@@ -88,7 +88,7 @@ export default {
     submitLogin () {
       this.loginRunning = true
       axios.defaults.withCredentials = true
-      axios.post((process.env.API_ENDPOINT + '/login/'),
+      axios.post((process.env.VUE_APP_API_ENDPOINT + '/login/'),
         {
           'Username': this.username,
           'Password': this.password

@@ -249,7 +249,7 @@ export default {
       error: false,
       message: null,
       processing: false,
-      apiEndpoint: process.env.API_ENDPOINT,
+      apiEndpoint: process.env.VUE_APP_API_ENDPOINT,
       isNewPayloadModalActive: false,
       availableAgentTypes: [],
       newPayloadAgentType: null,
@@ -358,7 +358,7 @@ export default {
     },
     getAgentTypes () {
       axios.defaults.withCredentials = true
-      axios.get((process.env.API_ENDPOINT + '/agent/type/')
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/')
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {

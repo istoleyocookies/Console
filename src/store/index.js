@@ -417,19 +417,14 @@ const transports = {
     SOCKET_TRANSPORTCREATED: (state, transportObject) => {
       console.log('SOCKET_TRANSPORTCREATED mutation fired')
       console.log(transportObject)
-      // TODO: this is a really dumb way to catch if the message
-      // contains the API key for a new transport, or a new transport.
-      // Ideally these should be seperate messaegs (API Key could be
-      // sent as a TransportApiKey message or something)
       if (transportObject.hasOwnProperty('ApiKey')) {
         state.newTransportId = transportObject.TransportId
         state.newTransportApiName = transportObject.ApiKey.KeyName
         state.newTransportApiSecret = transportObject.ApiKey.Secret
         state.isNewTransportApiModalActive = true
-      } else {
-        state.list.push(transportObject.Transport)
-        state.transportNotification = transportObject.Transport
       }
+      state.list.push(transportObject.Transport)
+      state.transportNotification = transportObject.Transport
     },
     SOCKET_TRANSPORTUPDATED: (state, transportObject) => {
       console.log('SOCKET_TRANSPORTUPDATED fired')
