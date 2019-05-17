@@ -21,6 +21,7 @@
           <p>
             {{ agent.Username }}@{{ agent.Hostname }}
           </p>
+          <span>{{ agent.Transport.Name }}</span>
           <span class="checkin-date is-pulled-right">{{ agent.LastCheckin | formatDateTime }}</span>
         </div>
       </div>
