@@ -43,6 +43,10 @@
             {{ props.row.Pid }}
         </b-table-column>
 
+        <b-table-column field='TransportName' label='Transport Name' numeric sortable>
+            {{ props.row.Transport.Name }}
+        </b-table-column>
+
         <b-table-column field='LastCheckin' label='Last Checkin' sortable>
             {{ props.row.LastCheckin | formatDateTime }}
         </b-table-column>
