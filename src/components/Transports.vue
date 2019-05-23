@@ -131,11 +131,22 @@ export default {
       newTransportApiName: state => state.transports.newTransportApiName,
       newTransportApiSecret: state => state.transports.newTransportApiSecret
     }),
+    transportsList () {
+      if (this.showHidden) {
+        return this.transports
+      } else {
+        return this.transports.filter(function (transport) {
+          if (transport.Visible) {
+            return transport
+          }
+        })
+      }
+    },
     filteredTransports (text) {
       if (this.query) {
         return this.findTransports(this.query)
       } else {
-        return this.transports
+        return this.transportsList
       }
     }
   },
@@ -148,17 +159,6 @@ export default {
       console.log('sending get maybe')
       this.$socket.emit('getTransport', { TransportId: 'all' })
       this.loading = false
-    },
-    transportsList () {
-      if (this.showHidden) {
-        return this.transports
-      } else {
-        return this.transports.filter(function (transport) {
-          if (transport.Visible) {
-            return transport
-          }
-        })
-      }
     },
     findTransports (query) {
       return this.transportsList.filter(function (transport) {
