@@ -99,7 +99,7 @@ export default {
       })
     },
     loadError (error) {
-      this.$router.push({ name: 'errorMessage', params: {ErrorMessageId: error.Id} })
+      this.$router.push({ name: 'errorMessage', params: { ErrorMessageId: error.Id } })
     },
     onSort (field, order) {
       this.sortField = field
