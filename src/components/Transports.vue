@@ -17,8 +17,8 @@
       <div class="content">
         <p>
           Transports sit between Faction and your agents. When you create a new Transport, you'll be asked to
-          provide a name. This name is free form, use it to identify what this transport will be used for, for 
-          example: "Low and Slow HTTPS". Once your transport has been created, you will get an API key. The 
+          provide a name. This name is free form, use it to identify what this transport will be used for, for
+          example: "Low and Slow HTTPS". Once your transport has been created, you will get an API key. The
           documentation for your transport should provide further details on what to do with this key.
         </p>
       </div>
@@ -178,7 +178,7 @@ export default {
       })
     },
     loadTransport (transport) {
-      this.$router.push({ name: 'transport', params: {TransportId: transport.Id} })
+      this.$router.push({ name: 'transport', params: { TransportId: transport.Id } })
     },
     openNewTransportModal () {
       this.isNewTransportModalActive = true

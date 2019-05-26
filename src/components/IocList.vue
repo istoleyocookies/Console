@@ -103,7 +103,7 @@ export default {
       })
     },
     loadIOC (ioc) {
-      this.$router.push({ name: 'ioc', params: {IocId: ioc.Id} })
+      this.$router.push({ name: 'ioc', params: { IocId: ioc.Id } })
     },
     onSort (field, order) {
       this.sortField = field

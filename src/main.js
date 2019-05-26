@@ -40,7 +40,7 @@ Vue.filter('formatDateTime', function (date) {
 new Vue({
   el: '#app',
   router,
-  components: {App},
+  components: { App },
   template: '<App/>',
   store
 })

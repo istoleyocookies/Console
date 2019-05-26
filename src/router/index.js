@@ -111,7 +111,7 @@ router.beforeEach((to, from, next) => {
     console.log('[router] User is trying to log in, sending them on their way.')
     next()
   } else if (!store.state.faction.loggedIn && to.name !== 'login') {
-    next({name: 'login', query: { next: to.fullPath }})
+    next({ name: 'login', query: { next: to.fullPath } })
   }
   next()
 })

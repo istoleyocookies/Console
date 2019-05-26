@@ -124,7 +124,7 @@ export default {
       this.$socket.emit('hideAgent', { AgentId: id })
     },
     loadConsole (agent) {
-      this.$router.push({ name: 'console', params: {AgentId: agent.Id} })
+      this.$router.push({ name: 'console', params: { AgentId: agent.Id } })
     },
     onSort (field, order) {
       this.sortField = field

@@ -115,7 +115,7 @@ export default {
       })
     },
     loadTask (task) {
-      this.$router.push({ name: 'task', params: {TaskId: task.Id} })
+      this.$router.push({ name: 'task', params: { TaskId: task.Id } })
     },
     onSort (field, order) {
       this.sortField = field

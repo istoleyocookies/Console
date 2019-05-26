@@ -409,11 +409,6 @@ const transports = {
       console.log(transportObjects)
       state.list = transportObjects.Results
     },
-    // SOCKET_NEWTRANSPORT: (state, transportObject) => {
-    //   console.log('SOCKET_NEWTRANSPORT mutation fired')
-    //   console.log(transportObject)
-    //   state.list.push(transportObject.Transport)
-    // },
     SOCKET_TRANSPORTCREATED: (state, transportObject) => {
       console.log('SOCKET_TRANSPORTCREATED mutation fired')
       console.log(transportObject)
