@@ -6,6 +6,14 @@
           <img class="is-rounded" src="../assets/faction-white-orange-fist-outline.png">
         </figure>
         <b-loading :is-full-page=true :active.sync="loginRunning"></b-loading>
+        <div class="login-warning notification is-danger is-radiusless" v-if="loginRunning">
+          <p>
+            There's a bug in Faction that may cause your first login to take over a minute. 
+            <a href="https://github.com/FactionC2/Faction/issues/10" target="_blank">
+              We're working to identify and fix it.
+            </a>
+          </p>
+        </div>
         <div>
           <p class="title is-2 has-text-centered padding-10">Welcome to Faction</p>
           <b-notification type="is-danger" has-icon :active.sync="error">
@@ -180,5 +188,14 @@ export default {
 .login-box {
   width: 30%;
   max-width: 380px;
+}
+
+.login-warning {
+  position: fixed;
+  top: 30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 1000;
 }
 </style>
