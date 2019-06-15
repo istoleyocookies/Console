@@ -1,5 +1,11 @@
 # Faction C2 Console
 
+|Repository|Build Status|
+|----------|------------|
+|Master | [![Master Build Status](https://dev.azure.com/FactionC2/Faction/_apis/build/status/FactionC2.Console?branchName=master)](https://dev.azure.com/FactionC2/Faction/_build/latest?definitionId=4&branchName=master)
+|Development |[![Development Build Status](https://dev.azure.com/FactionC2/Faction/_apis/build/status/FactionC2.Console?branchName=development)](https://dev.azure.com/FactionC2/Faction/_build/latest?definitionId=4&branchName=development)|
+
+
 This is the web interface for Faction C2. It is built using [Vue](https://vuejs.org/)
 
 ## Installing and Running
