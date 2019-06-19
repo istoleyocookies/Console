@@ -20,3 +20,23 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+
+- task: Docker@2
+  displayName: 'Build Docker Image and Push to Docker Hub (Master)'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    containerRegistry: 'Docker Hub - Faction'
+    repository: 'faction/console'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
+
+- task: Docker@2
+  displayName: 'Build Docker Image and Push to Docker Hub (Development)'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/development'))
+  inputs:
+    containerRegistry: 'Docker Hub - Faction'
+    repository: 'faction/console'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: 'dev'
