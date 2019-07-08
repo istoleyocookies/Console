@@ -8,7 +8,7 @@
         <b-loading :is-full-page=true :active.sync="loginRunning"></b-loading>
         <div class="login-warning notification is-danger is-radiusless" v-if="loginRunning">
           <p>
-            There's a bug in Faction that may cause your first login to take over a minute. 
+            There's a bug in Faction that may cause your first login to take over a minute.
             <a href="https://github.com/FactionC2/Faction/issues/10" target="_blank">
               We're working to identify and fix it.
             </a>
