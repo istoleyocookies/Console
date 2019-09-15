@@ -36,6 +36,10 @@ Vue.filter('formatDateTime', function (date) {
   return moment.utc(date).local().format('MM/DD LTS')
 })
 
+Vue.filter('formatDateTimeAgo', function (date) {
+  return moment.utc(date).local().fromNow()
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
