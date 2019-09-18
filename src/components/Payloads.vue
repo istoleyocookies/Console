@@ -375,13 +375,14 @@ export default {
       this.isNewPayloadModalActive = true
     },
     clearNewPayloadValues () {
-      this.newPayloadAgentTypeFormat = null
+      this.newPayloadFormat = null
       this.newPayloadTransport = null
-      this.newPayloadDescription = null
-      this.newPayloadAgentType = null
+      this.newPayloadOperatingSystem = null
+      this.newPayloadArchitecture = null
+      this.newPayloadVersion = null
+      this.newPayloadConfiguration = null
       this.newPayloadBeaconInterval = 5
       this.newPayloadJitter = 0
-      this.newPayloadExpirationDate = null
     },
     closeNewPayloadWindow () {
       this.clearNewPayloadValues()
@@ -409,6 +410,18 @@ export default {
       }
       this.message = null
       this.error = false
+    },
+    newPayloadAgentType () {
+      if (this.newPayloadAgentType != null) {
+        this.newPayloadFormat = this.newPayloadAgentType.Formats[0]
+        this.newPayloadTransport = this.newPayloadAgentType.AvailableTransports[0]
+        this.newPayloadOperatingSystem = this.newPayloadAgentType.OperatingSystems[0]
+        this.newPayloadArchitecture = this.newPayloadAgentType.Architectures[0]
+        this.newPayloadVersion = this.newPayloadAgentType.Versions[0]
+        this.newPayloadConfiguration = this.newPayloadAgentType.Configurations[0]
+        this.newPayloadBeaconInterval = 5
+        this.newPayloadJitter = 0
+      }
     }
   },
   beforeMount () {

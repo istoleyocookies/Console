@@ -13,7 +13,7 @@
           <div class="console-input">
             <div class="field">
               <div class="control has-icons-left">
-                <input type="text" class="input" v-model="content" v-on:keyup.enter="submitMessage">
+                <input type="text" class="input" v-model="content" v-on:keyup.enter="submitMessage" />
                 <span class="icon is-left">
                   <i class="mdi mdi-chevron-right mdi-24px"></i>
                 </span>
@@ -152,7 +152,7 @@ export default {
 .console {
   position: fixed;
   top: 52px;
-  left: 20%;
+  left: 25%;
   right: 0;
   bottom: 40px;
   min-height: 400px;
@@ -171,7 +171,7 @@ export default {
   border-top-width: 1px;
   position: fixed;
   right: 0;
-  left: 20%;
+  left: 25%;
   bottom: 0;
   height: 40px;
 }
@@ -189,7 +189,7 @@ export default {
   border: none;
   position: fixed;
   right: 0;
-  left: 20%;
+  left: 25%;
   bottom: 0;
   border-radius: 0;
 }
@@ -226,17 +226,6 @@ export default {
   .console-input,
   .console-input .input {
     left: 30%;
-  }
-}
-
-@media only screen and (min-width: 1408px) and (max-width: 1524px) {
-  .console {
-    left: 25%;
-  }
-
-  .console-input,
-  .console-input .input {
-    left: 25%;
   }
 }
 </style>
