@@ -15,35 +15,35 @@
 </template>
 
 <script>
-import agent from "./Agent";
+import agent from './Agent'
 export default {
-  props: ["agents"],
-  data() {
+  props: ['agents'],
+  data () {
     return {
       query: null,
       sorting: -1
-    };
+    }
   },
   components: {
     appAgent: agent
   },
   computed: {
-    filteredAgents(text) {
+    filteredAgents (text) {
       if (this.query) {
-        return this.findAgents(this.query);
+        return this.findAgents(this.query)
       } else {
         return this.agents
           .slice(0)
-          .sort((a, b) => (a.Id < b.Id ? this.sorting : -this.sorting));
+          .sort((a, b) => (a.Id < b.Id ? this.sorting : -this.sorting))
       }
     }
   },
   methods: {
-    findAgents(query) {
-      return this.agents.filter(function(agent) {
+    findAgents (query) {
+      return this.agents.filter(function (agent) {
         for (var property in agent) {
           if (
-            !["InitialCheckin", "LastCheckin", "Success", "Admin"].includes(
+            !['InitialCheckin', 'LastCheckin', 'Success', 'Admin'].includes(
               property
             )
           ) {
@@ -52,17 +52,17 @@ export default {
                 .toLowerCase()
                 .includes(query.toLowerCase())
             ) {
-              return agent;
+              return agent
             }
-            if (query.toLowerCase() === "admin" && agent.Admin === true) {
-              return agent;
+            if (query.toLowerCase() === 'admin' && agent.Admin === true) {
+              return agent
             }
           }
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style scoped>

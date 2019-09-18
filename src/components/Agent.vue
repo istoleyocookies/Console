@@ -46,21 +46,21 @@
 
 <script>
 export default {
-  props: ["agent"],
+  props: ['agent'],
   computed: {
-    osIcon() {
-      if (this.agent.OperatingSystem.includes("indows")) {
-        return "mdi mdi-windows";
-      } else if (this.agent.OperatingSystem.includes("acOS")) {
-        return "mdi mdi-apple";
-      } else if (this.agent.OperatingSystem.includes("nix")) {
-        return "mdi mdi-linux";
+    osIcon () {
+      if (this.agent.OperatingSystem.includes('indows')) {
+        return 'mdi mdi-windows'
+      } else if (this.agent.OperatingSystem.includes('acOS')) {
+        return 'mdi mdi-apple'
+      } else if (this.agent.OperatingSystem.includes('nix')) {
+        return 'mdi mdi-linux'
       } else {
-        return "mdi mdi-laptop";
+        return 'mdi mdi-laptop'
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>

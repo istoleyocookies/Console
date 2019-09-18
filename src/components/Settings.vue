@@ -165,11 +165,11 @@ Secret: {{ this.newApiKeySecret }}
 </template>
 
 <script>
-import { mapState } from "vuex";
-import axios from "axios";
+import { mapState } from 'vuex'
+import axios from 'axios'
 
 export default {
-  data() {
+  data () {
     return {
       currentPassword: null,
       newPassword: null,
@@ -188,7 +188,7 @@ export default {
       newUserPassword: null,
       newUserConfirmPassword: null,
       availableRoles: []
-    };
+    }
   },
   computed: {
     ...mapState({
@@ -197,238 +197,238 @@ export default {
     })
   },
   methods: {
-    changePassword() {
-      this.processing = true;
+    changePassword () {
+      this.processing = true
       if (this.currentPassword && this.newPassword === this.confirmPassword) {
-        axios.defaults.withCredentials = true;
+        axios.defaults.withCredentials = true
         axios
           .post(
             process.env.VUE_APP_API_ENDPOINT +
-              "/user/" +
+              '/user/' +
               this.userId +
-              "/password/",
+              '/password/',
             {
               CurrentPassword: this.currentPassword,
               NewPassword: this.newPassword
             }
           )
           .then(
-            function(response) {
-              this.currentPassword = this.newPassword = this.confirmPassword = null;
-              console.log(response);
+            function (response) {
+              this.currentPassword = this.newPassword = this.confirmPassword = null
+              console.log(response)
               if (!response.data.Success) {
-                this.error = true;
+                this.error = true
               }
-              this.message = response.data.Message;
+              this.message = response.data.Message
             }.bind(this)
-          );
+          )
       } else {
         if (this.currentPassword == null) {
-          this.message = "You have to enter your password first dingus.";
+          this.message = 'You have to enter your password first dingus.'
         } else {
-          this.message = "New password and Confirm password do not match.";
+          this.message = 'New password and Confirm password do not match.'
         }
-        this.error = true;
+        this.error = true
       }
-      this.processing = false;
+      this.processing = false
     },
-    getApiKeys() {
-      this.processing = true;
-      axios.defaults.withCredentials = true;
+    getApiKeys () {
+      this.processing = true
+      axios.defaults.withCredentials = true
       axios
         .get(
-          process.env.VUE_APP_API_ENDPOINT + "/user/" + this.userId + "/apikey/"
+          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/'
         )
         .then(
-          function(response) {
-            console.log(response);
+          function (response) {
+            console.log(response)
             if (!response.data.Success) {
-              this.error = true;
-              this.message = response.data.Message;
+              this.error = true
+              this.message = response.data.Message
             } else {
-              this.apikeys = response.data.Results;
+              this.apikeys = response.data.Results
             }
           }.bind(this)
-        );
-      this.proccessing = false;
+        )
+      this.proccessing = false
     },
-    newApiKey() {
-      this.processing = true;
-      axios.defaults.withCredentials = true;
+    newApiKey () {
+      this.processing = true
+      axios.defaults.withCredentials = true
       axios
         .post(
-          process.env.VUE_APP_API_ENDPOINT + "/user/" + this.userId + "/apikey/"
+          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/'
         )
         .then(
-          function(response) {
-            console.log(response);
+          function (response) {
+            console.log(response)
             if (!response.data.Success) {
-              this.error = true;
-              this.message = response.data.Message;
-              this.proccessing = false;
+              this.error = true
+              this.message = response.data.Message
+              this.proccessing = false
             } else {
-              console.log("pop api window");
-              this.newApiKeyName = response.data.Name;
-              this.newApiKeySecret = response.data.Secret;
-              this.isNewApiKeyModalActive = true;
-              this.getApiKeys();
+              console.log('pop api window')
+              this.newApiKeyName = response.data.Name
+              this.newApiKeySecret = response.data.Secret
+              this.isNewApiKeyModalActive = true
+              this.getApiKeys()
             }
           }.bind(this)
-        );
-      this.processing = false;
+        )
+      this.processing = false
     },
-    deleteApiKey(apiKeyId) {
-      axios.defaults.withCredentials = true;
+    deleteApiKey (apiKeyId) {
+      axios.defaults.withCredentials = true
       axios
         .delete(
           process.env.VUE_APP_API_ENDPOINT +
-            "/user/" +
+            '/user/' +
             this.userId +
-            "/apikey/" +
+            '/apikey/' +
             apiKeyId +
-            "/"
+            '/'
         )
         .then(
-          function(response) {
-            console.log(response);
+          function (response) {
+            console.log(response)
             if (!response.data.Success) {
-              this.error = true;
+              this.error = true
             }
-            this.message = response.data.Message;
-            this.proccessing = false;
-            this.getApiKeys();
+            this.message = response.data.Message
+            this.proccessing = false
+            this.getApiKeys()
           }.bind(this)
-        );
+        )
     },
-    clearNewApiKeyValues() {
-      this.newApiKeyName = null;
-      this.newApiKeySecret = null;
+    clearNewApiKeyValues () {
+      this.newApiKeyName = null
+      this.newApiKeySecret = null
     },
-    closeNewApiKeyWindow() {
-      this.clearNewApiKeyValues();
-      this.isNewApiKeyModalActive = false;
+    closeNewApiKeyWindow () {
+      this.clearNewApiKeyValues()
+      this.isNewApiKeyModalActive = false
     },
-    getUsers() {
-      axios.defaults.withCredentials = true;
-      axios.get(process.env.VUE_APP_API_ENDPOINT + "/user/").then(
-        function(response) {
-          console.log(response);
+    getUsers () {
+      axios.defaults.withCredentials = true
+      axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/').then(
+        function (response) {
+          console.log(response)
           if (!response.data.Success) {
-            this.error = true;
-            this.message = response.data.Message;
+            this.error = true
+            this.message = response.data.Message
           } else {
-            this.users = response.data.Results;
+            this.users = response.data.Results
           }
-          this.proccessing = false;
+          this.proccessing = false
         }.bind(this)
-      );
+      )
     },
-    createUser() {
+    createUser () {
       if (this.newUserPassword === this.newUserConfirmPassword) {
-        this.processing = true;
-        axios.defaults.withCredentials = true;
+        this.processing = true
+        axios.defaults.withCredentials = true
         axios
-          .post(process.env.VUE_APP_API_ENDPOINT + "/user/", {
+          .post(process.env.VUE_APP_API_ENDPOINT + '/user/', {
             Username: this.newUserName,
             RoleName: this.newUserRole,
             Password: this.newUserPassword
           })
           .then(
-            function(response) {
-              console.log(response);
+            function (response) {
+              console.log(response)
               if (!response.data.Success) {
-                this.error = true;
-                this.message = response.data.Message;
+                this.error = true
+                this.message = response.data.Message
               } else {
-                this.isNewUserModalActive = false;
-                this.getUsers();
+                this.isNewUserModalActive = false
+                this.getUsers()
               }
-              this.proccessing = false;
-              this.clearNewUserValues();
+              this.proccessing = false
+              this.clearNewUserValues()
             }.bind(this)
-          );
+          )
       } else {
-        this.error = true;
-        this.message = "Password and Confirm Password do not match";
+        this.error = true
+        this.message = 'Password and Confirm Password do not match'
       }
-      this.processing = false;
+      this.processing = false
     },
-    deleteUser(userId) {
-      axios.defaults.withCredentials = true;
+    deleteUser (userId) {
+      axios.defaults.withCredentials = true
       axios
-        .delete(process.env.VUE_APP_API_ENDPOINT + "/user/" + userId + "/")
+        .delete(process.env.VUE_APP_API_ENDPOINT + '/user/' + userId + '/')
         .then(
-          function(response) {
-            console.log(response);
+          function (response) {
+            console.log(response)
             if (!response.data.Success) {
-              this.error = true;
+              this.error = true
             }
-            this.message = response.data.Message;
-            this.proccessing = false;
-            this.getUsers();
+            this.message = response.data.Message
+            this.proccessing = false
+            this.getUsers()
           }.bind(this)
-        );
+        )
     },
-    clearNewUserValues() {
-      this.newUserName = null;
-      this.newUserRole = null;
-      this.newUserPassword = null;
-      this.newUserConfirmPassword = null;
+    clearNewUserValues () {
+      this.newUserName = null
+      this.newUserRole = null
+      this.newUserPassword = null
+      this.newUserConfirmPassword = null
     },
-    closeNewUserWindow() {
-      this.clearNewUserValues();
-      this.isNewUserModalActive = false;
+    closeNewUserWindow () {
+      this.clearNewUserValues()
+      this.isNewUserModalActive = false
     },
-    getUserRoles() {
-      axios.defaults.withCredentials = true;
-      axios.get(process.env.VUE_APP_API_ENDPOINT + "/user/role/").then(
-        function(response) {
-          console.log(response);
+    getUserRoles () {
+      axios.defaults.withCredentials = true
+      axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/role/').then(
+        function (response) {
+          console.log(response)
           if (!response.data.Success) {
-            this.error = true;
-            this.message = response.data.Message;
+            this.error = true
+            this.message = response.data.Message
           } else {
-            this.availableRoles = response.data.Results;
+            this.availableRoles = response.data.Results
           }
-          this.proccessing = false;
+          this.proccessing = false
         }.bind(this)
-      );
+      )
     },
-    newUserModal() {
-      this.getUserRoles();
-      this.isNewUserModalActive = true;
+    newUserModal () {
+      this.getUserRoles()
+      this.isNewUserModalActive = true
     }
   },
   watch: {
-    message() {
+    message () {
       if (this.message != null) {
         if (this.error) {
           this.$toast.open({
             duration: 5000,
             message: this.message,
-            type: "is-danger",
+            type: 'is-danger',
             queue: false
-          });
+          })
         } else {
           this.$toast.open({
             duration: 5000,
             message: this.message,
-            type: "is-success",
+            type: 'is-success',
             queue: false
-          });
+          })
         }
       }
-      this.message = null;
-      this.error = false;
+      this.message = null
+      this.error = false
     }
   },
-  beforeMount() {
-    this.getApiKeys();
-    if (this.userRole === "admin") {
-      this.getUsers();
+  beforeMount () {
+    this.getApiKeys()
+    if (this.userRole === 'admin') {
+      this.getUsers()
     }
   }
-};
+}
 </script>
 
 <style scoped>
