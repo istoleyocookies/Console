@@ -57,7 +57,7 @@ export default {
     ]),
     getIoc (iocId) {
       console.log('Get Ioc fired with id of ' + iocId)
-      this.$socket.emit('getIoc', { IocId: iocId })
+      this.$socket.client.emit('getIoc', { IocId: iocId })
     }
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="faction-container">
-      <div class="columns">
+      <div class=columns>
         <div class="column is-two-thirds">
           <h1 class="title">Payloads</h1>
         </div>
@@ -29,75 +29,66 @@
         </div>
       </b-message>
       <p>
-        <b-table :data="filteredPayloads" hoverable>
+        <b-table
+          :data='filteredPayloads'
+          hoverable
+          >
           <template slot-scope="props">
-            <b-table-column field="Id" label="ID" width="40" numeric sortable>{{ props.row.Id }}</b-table-column>
-
-            <b-table-column field="Name" label="Name" sortable>{{ props.row.Name }}</b-table-column>
-
-            <b-table-column
-              field="AgentType.Name"
-              label="Type"
-              sortable
-            >{{ props.row.AgentType.Name }}</b-table-column>
-
-            <b-table-column
-              field="Transport.Name"
-              label="Transport"
-              sortable
-            >{{ props.row.Transport.Name }}</b-table-column>
-
-            <b-table-column
-              field="OperatingSystem.Name"
-              label="OS"
-              sortable
-            >{{ props.row.OperatingSystem.Name }}</b-table-column>
-
-            <b-table-column
-              field="Architecture.Name"
-              label="Arch"
-              sortable
-            >{{ props.row.Architecture.Name }}</b-table-column>
-
-            <b-table-column
-              field="Configuration.Name"
-              label="Configuration"
-              sortable
-            >{{ props.row.Configuration.Name }}</b-table-column>
-
-            <b-table-column field="Format.Name" label="Format" sortable>{{ props.row.Format.Name }}</b-table-column>
-
-            <b-table-column
-              field="BeaconInterval"
-              label="Beacon Interval"
-              sortable
-            >{{ props.row.BeaconInterval }}</b-table-column>
-
-            <b-table-column field="Jitter" label="Jitter" sortable>{{ props.row.Jitter }}</b-table-column>
-
-            <b-table-column
-              field="ExpirationDate"
-              label="Expiration Date"
-              sortable
-            >{{ props.row.ExpirationDate | formatDateTime }}</b-table-column>
-
-            <b-table-column field="Enabled" label="Enabled" sortable>
-              <b-checkbox
-                v-model="props.row.Enabled"
-                @click.native="togglePayload(props.row.Id, $event)"
-              ></b-checkbox>
+            <b-table-column field='Id' label='ID' width='40' numeric sortable>
+              {{ props.row.Id }}
             </b-table-column>
 
-            <b-table-column field="Hide" label="Hide" centered>
-              <button
-                class="button is-danger is-small is-rounded"
-                @click="hidePayload(props.row.Id)"
-              >
+            <b-table-column field="Name" label="Name" sortable>
+              {{ props.row.Name }}
+            </b-table-column>
+
+            <b-table-column field="AgentType.Name" label="Type" sortable>
+              {{ props.row.AgentType.Name }}
+            </b-table-column>
+
+            <b-table-column field="Transport.Name" label="Transport" sortable>
+              {{ props.row.Transport.Name }}
+            </b-table-column>
+
+            <b-table-column field="OperatingSystem.Name" label="OS" sortable>
+              {{ props.row.OperatingSystem.Name }}
+            </b-table-column>
+
+            <b-table-column field="Architecture.Name" label="Arch" sortable>
+              {{ props.row.Architecture.Name }}
+            </b-table-column>
+
+            <b-table-column field="Configuration.Name" label="Configuration" sortable>
+              {{ props.row.Configuration.Name }}
+            </b-table-column>
+
+            <b-table-column field="Format.Name" label="Format" sortable>
+              {{ props.row.Format.Name }}
+            </b-table-column>
+
+            <b-table-column field="BeaconInterval" label="Beacon Interval" sortable>
+              {{ props.row.BeaconInterval }}
+            </b-table-column>
+
+            <b-table-column field="Jitter" label="Jitter" sortable>
+              {{ props.row.Jitter }}
+            </b-table-column>
+
+            <b-table-column field="ExpirationDate" label="Expiration Date" sortable>
+              {{ props.row.ExpirationDate | formatDateTime }}
+            </b-table-column>
+
+            <b-table-column field='Enabled' label='Enabled' sortable>
+                <b-checkbox v-model="props.row.Enabled" @click.native="togglePayload(props.row.Id, $event)"></b-checkbox>
+            </b-table-column>
+
+            <b-table-column field='Hide' label='Hide' centered>
+              <button class="button is-danger is-small is-rounded" @click="hidePayload(props.row.Id)">
                 <b-icon icon="delete" size="is-small"></b-icon>
               </button>
             </b-table-column>
 
-            <b-table-column field="Download" label="Download">
+            <b-table-column field='Download' label='Download'>
               <!-- We thrown the name on the end of this link to bust caching -->
               <a :href="apiEndpoint + '/payload/' + props.row.Id + '/file/' + '?' + props.row.Name">
                 <button :disabled="!props.row.Built" class="button is-information">
@@ -115,133 +106,145 @@
       </div>
       <b-modal :active.sync="isNewPayloadModalActive" scroll="keep">
         <div class="modal-card" style="width: auto">
-          <header class="modal-card-head">
-            <p class="modal-card-title">New Payload</p>
-          </header>
-          <section class="modal-card-body">
-            <b-field label="Agent Type">
-              <b-select placeholder="Select an Agent Type" v-model="newPayloadAgentType">
-                <option
-                  v-for="agentType in availableAgentTypes"
-                  :value="agentType"
-                  :key="agentType.Id"
-                >{{ agentType.Name }}</option>
-              </b-select>
-            </b-field>
+            <header class="modal-card-head">
+                <p class="modal-card-title">New Payload</p>
+            </header>
+            <section class="modal-card-body">
+              <b-field label="Agent Type">
+                  <b-select placeholder="Select an Agent Type" v-model="newPayloadAgentType">
+                    <option
+                      v-for="agentType in availableAgentTypes"
+                      :value="agentType"
+                      :key="agentType.Id">
+                      {{ agentType.Name }}
+                    </option>
+                  </b-select>
+              </b-field>
 
-            <b-field label="Description">
-              <b-input placeholder="Description" v-model="newPayloadDescription"></b-input>
-            </b-field>
-            <div class="columns" v-if="newPayloadAgentType">
-              <div class="column">
-                <b-field label="Architecture">
-                  <b-select placeholder="Select an Architecture" v-model="newPayloadArchitecture">
-                    <option
-                      v-for="architecture in newPayloadAgentType.Architectures"
-                      :value="architecture"
-                      :key="architecture.Id"
-                    >{{ architecture.Name }}</option>
-                  </b-select>
-                </b-field>
-                <b-field label="Version">
-                  <b-select placeholder="Select an Version" v-model="newPayloadVersion">
-                    <option
-                      v-for="version in newPayloadAgentType.Versions"
-                      :value="version"
-                      :key="version.Id"
-                    >{{ version.Name }}</option>
-                  </b-select>
-                </b-field>
-                <b-field label="Operating System">
-                  <b-select
-                    placeholder="Select an Operating System"
-                    v-model="newPayloadOperatingSystem"
-                  >
-                    <option
-                      v-for="operatingsystem in newPayloadAgentType.OperatingSystems"
-                      :value="operatingsystem"
-                      :key="operatingsystem.Id"
-                    >{{ operatingsystem.Name }}</option>
-                  </b-select>
-                </b-field>
-                <b-field label="Configuration">
-                  <b-select placeholder="Select an Configuration" v-model="newPayloadConfiguration">
-                    <option
-                      v-for="configuration in newPayloadAgentType.Configurations"
-                      :value="configuration"
-                      :key="configuration.Id"
-                    >{{ configuration.Name }}</option>
-                  </b-select>
-                </b-field>
-                <b-field label="Format">
-                  <b-select placeholder="Select an Payload Format" v-model="newPayloadFormat">
-                    <option
-                      v-for="format in newPayloadAgentType.Formats"
-                      :value="format"
-                      :key="format.Id"
-                    >{{ format.Name }}</option>
-                  </b-select>
-                </b-field>
+              <b-field label="Description" >
+                <b-input placeholder="Description" v-model="newPayloadDescription">
+                </b-input>
+              </b-field>
+              <div class="columns" v-if="newPayloadAgentType">
+                <div class="column">
+                  <b-field label="Architecture">
+                    <b-select placeholder="Select an Architecture" v-model="newPayloadArchitecture">
+                      <option
+                        v-for="architecture in newPayloadAgentType.Architectures"
+                        :value="architecture"
+                        :key="architecture.Id">
+                        {{ architecture.Name }}
+                      </option>
+                    </b-select>
+                  </b-field>
+                  <b-field label="Version">
+                    <b-select placeholder="Select an Version" v-model="newPayloadVersion">
+                      <option
+                        v-for="version in newPayloadAgentType.Versions"
+                        :value="version"
+                        :key="version.Id">
+                        {{ version.Name }}
+                      </option>
+                    </b-select>
+                  </b-field>
+                  <b-field label="Operating System">
+                    <b-select placeholder="Select an Operating System" v-model="newPayloadOperatingSystem">
+                      <option
+                        v-for="operatingsystem in newPayloadAgentType.OperatingSystems"
+                        :value="operatingsystem"
+                        :key="operatingsystem.Id">
+                        {{ operatingsystem.Name }}
+                      </option>
+                    </b-select>
+                  </b-field>
+                  <b-field label="Configuration">
+                    <b-select placeholder="Select an Configuration" v-model="newPayloadConfiguration">
+                      <option
+                        v-for="configuration in newPayloadAgentType.Configurations"
+                        :value="configuration"
+                        :key="configuration.Id">
+                        {{ configuration.Name }}
+                      </option>
+                    </b-select>
+                  </b-field>
+                  <b-field label="Format">
+                      <b-select placeholder="Select an Payload Format" v-model="newPayloadFormat">
+                        <option
+                          v-for="format in newPayloadAgentType.Formats"
+                          :value="format"
+                          :key="format.Id">
+                          {{ format.Name }}
+                        </option>
+                      </b-select>
+                  </b-field>
+                </div>
+                <div class="column">
+                  <b-field label="Agent Transport">
+                    <b-select placeholder="Select an Agent Transport Type" v-model="newPayloadTransport">
+                      <option
+                        v-for="transport in newPayloadAgentType.AvailableTransports"
+                        :value="transport"
+                        :key="transport.Id">
+                        {{ transport.Name }}
+                      </option>
+                    </b-select>
+                  </b-field>
+
+                  <b-field label="Beacon Interval">
+                      <b-input
+                          v-model="newPayloadBeaconInterval"
+                          type="number"
+                          min="0"
+                          required>
+                      </b-input>
+                  </b-field>
+
+                  <b-field label="Jitter">
+                      <b-input
+                          v-model="newPayloadJitter"
+                          type="number"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          required>
+                      </b-input>
+                  </b-field>
+
+                  <b-field label="Expiration Date">
+                      <b-datepicker
+                        position="is-top-right"
+                        v-model="newPayloadExpirationDate">
+                        <button class="button is-danger"
+                            @click="newPayloadExpirationDate = null">
+                            <b-icon icon="close"></b-icon>
+                            <span>Clear</span>
+                        </button>
+                      </b-datepicker>
+                  </b-field>
+                  <b-field label="Debug">
+                      <b-switch
+                        v-model="newPayloadDebug">
+                      </b-switch>
+                  </b-field>
+                </div>
               </div>
-              <div class="column">
-                <b-field label="Agent Transport">
-                  <b-select
-                    placeholder="Select an Agent Transport Type"
-                    v-model="newPayloadTransport"
-                  >
-                    <option
-                      v-for="transport in newPayloadAgentType.AvailableTransports"
-                      :value="transport"
-                      :key="transport.Id"
-                    >{{ transport.Name }}</option>
-                  </b-select>
-                </b-field>
-
-                <b-field label="Beacon Interval">
-                  <b-input v-model="newPayloadBeaconInterval" type="number" min="0" required></b-input>
-                </b-field>
-
-                <b-field label="Jitter">
-                  <b-input
-                    v-model="newPayloadJitter"
-                    type="number"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    required
-                  ></b-input>
-                </b-field>
-
-                <b-field label="Expiration Date">
-                  <b-datepicker position="is-top-right" v-model="newPayloadExpirationDate">
-                    <button class="button is-danger" @click="newPayloadExpirationDate = null">
-                      <b-icon icon="close"></b-icon>
-                      <span>Clear</span>
-                    </button>
-                  </b-datepicker>
-                </b-field>
-                <b-field label="Debug">
-                  <b-switch v-model="newPayloadDebug"></b-switch>
-                </b-field>
-              </div>
-            </div>
-          </section>
-          <footer class="modal-card-foot">
-            <button class="button is-primary" @click="createPayload">Create Payload</button>
-          </footer>
-        </div>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-primary" @click="createPayload">Create Payload</button>
+            </footer>
+          </div>
       </b-modal>
     </div>
   </section>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import axios from "axios";
-import moment from "moment";
+import { mapState } from 'vuex'
+import axios from 'axios'
+import moment from 'moment'
 
 export default {
-  data() {
+  data () {
     return {
       error: false,
       message: null,
@@ -263,171 +266,166 @@ export default {
       newPayloadDebug: false,
       isHelpActive: false,
       query: null
-    };
+    }
   },
   computed: {
     ...mapState({
       payloads: state => state.payloads.list,
       userId: state => state.faction.userId
     }),
-    payloadsList() {
+    payloadsList () {
       if (this.showHidden) {
-        return this.payloads;
+        return this.payloads
       } else {
-        return this.payloads.filter(function(payload) {
+        return this.payloads.filter(function (payload) {
           if (payload.Visible) {
-            return payload;
+            return payload
           }
-        });
+        })
       }
     },
-    filteredPayloads(text) {
+    filteredPayloads (text) {
       if (this.query) {
-        return this.findPayloads(this.query);
+        return this.findPayloads(this.query)
       } else {
-        return this.payloadsList;
+        return this.payloadsList
       }
     },
-    utcExpirationDate() {
-      return moment(this.newPayloadExpirationDate)
-        .utc()
-        .toISOString();
+    utcExpirationDate () {
+      return moment(this.newPayloadExpirationDate).utc().toISOString()
     }
   },
   methods: {
-    getPayloads() {
-      this.loading = true;
-      console.log("sending get maybe");
-      this.$socket.emit("getPayload", { PayloadId: "all" });
-      this.loading = false;
+    getPayloads () {
+      this.loading = true
+      console.log('sending get maybe')
+      this.$socket.client.emit('getPayload', { PayloadId: 'all' })
+      this.loading = false
     },
-    findPayloads(query) {
-      return this.payloadsList.filter(function(payload) {
+    findPayloads (query) {
+      return this.payloadsList.filter(function (payload) {
         for (var property in payload) {
-          if (!["Created", "Key", "Name", "LastDownload"].includes(property)) {
-            if (
-              String(payload[property])
-                .toLowerCase()
-                .includes(query.toLowerCase())
-            ) {
-              return payload;
+          if (!['Created', 'Key', 'Name', 'LastDownload'].includes(property)) {
+            if (String(payload[property]).toLowerCase().includes(query.toLowerCase())) {
+              return payload
             }
           }
         }
-      });
+      })
     },
-    createPayload() {
-      this.processing = true;
+    createPayload () {
+      this.processing = true
 
-      var expirationDate = null;
+      var expirationDate = null
       if (this.utcExpirationDate != null) {
-        expirationDate = this.utcExpirationDate;
+        expirationDate = this.utcExpirationDate
       }
-      console.log(expirationDate);
-      this.$socket.emit("newPayload", {
-        Description: this.newPayloadDescription,
-        AgentType: this.newPayloadAgentType.Id,
-        FormatId: this.newPayloadFormat.Id,
-        TransportId: this.newPayloadTransport.Id,
-        AgentTransportId: this.newPayloadTransport.AgentTransportId,
-        OperatingSystemId: this.newPayloadOperatingSystem.Id,
-        ArchitectureId: this.newPayloadArchitecture.Id,
-        VersionId: this.newPayloadVersion.Id,
-        AgentTypeConfigurationId: this.newPayloadConfiguration.Id,
-        BeaconInterval: parseInt(this.newPayloadBeaconInterval),
-        Jitter: parseFloat(this.newPayloadJitter),
-        ExpirationDate: expirationDate,
-        Debug: this.newPayloadDebug
-      });
-      this.proccessing = false;
-      this.closeNewPayloadWindow();
+      console.log(expirationDate)
+      this.$socket.client.emit('newPayload',
+        {
+          'Description': this.newPayloadDescription,
+          'AgentType': this.newPayloadAgentType.Id,
+          'FormatId': this.newPayloadFormat.Id,
+          'TransportId': this.newPayloadTransport.Id,
+          'AgentTransportId': this.newPayloadTransport.AgentTransportId,
+          'OperatingSystemId': this.newPayloadOperatingSystem.Id,
+          'ArchitectureId': this.newPayloadArchitecture.Id,
+          'VersionId': this.newPayloadVersion.Id,
+          'AgentTypeConfigurationId': this.newPayloadConfiguration.Id,
+          'BeaconInterval': parseInt(this.newPayloadBeaconInterval),
+          'Jitter': parseFloat(this.newPayloadJitter),
+          'ExpirationDate': expirationDate,
+          'Debug': this.newPayloadDebug
+        })
+      this.proccessing = false
+      this.closeNewPayloadWindow()
     },
-    togglePayload(payloadId, state) {
-      console.log("[togglePayload] got payload: " + payloadId);
-      console.log(state.target.checked);
+    togglePayload (payloadId, state) {
+      console.log('[togglePayload] got payload: ' + payloadId)
+      console.log(state.target.checked)
       if (state.target.checked !== undefined) {
-        console.log("[togglePayload] payload enabled: " + state.target.checked);
-        this.$socket.emit("updatePayload", {
-          Id: payloadId,
-          Enabled: state.target.checked
-        });
+        console.log('[togglePayload] payload enabled: ' + state.target.checked)
+        this.$socket.client.emit('updatePayload',
+          {
+            'Id': payloadId,
+            'Enabled': state.target.checked
+          })
       }
     },
-    hidePayload(id) {
-      console.log("deleting payload id: " + id);
-      this.$socket.emit("hidePayload", { PayloadId: id });
+    hidePayload (id) {
+      console.log('deleting payload id: ' + id)
+      this.$socket.client.emit('hidePayload', { PayloadId: id })
     },
-    getAgentTypes() {
-      axios.defaults.withCredentials = true;
-      axios.get(process.env.VUE_APP_API_ENDPOINT + "/agent/type/").then(
-        function(response) {
-          console.log(response);
-          if (!response.data.Success) {
-            this.error = true;
-            this.message = response.data.Message;
-          } else {
-            this.availableAgentTypes = response.data.Results;
-          }
-          this.proccessing = false;
-        }.bind(this)
-      );
+    getAgentTypes () {
+      axios.defaults.withCredentials = true
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/')
+      ).then(function (response) {
+        console.log(response)
+        if (!response.data.Success) {
+          this.error = true
+          this.message = response.data.Message
+        } else {
+          this.availableAgentTypes = response.data.Results
+        }
+        this.proccessing = false
+      }.bind(this))
     },
-    openNewPayloadModal() {
-      this.getAgentTypes();
-      this.isNewPayloadModalActive = true;
+    openNewPayloadModal () {
+      this.getAgentTypes()
+      this.isNewPayloadModalActive = true
     },
-    clearNewPayloadValues() {
-      this.newPayloadFormat = null;
-      this.newPayloadTransport = null;
-      this.newPayloadOperatingSystem = null;
-      this.newPayloadArchitecture = null;
-      this.newPayloadVersion = null;
-      this.newPayloadConfiguration = null;
-      this.newPayloadBeaconInterval = 5;
-      this.newPayloadJitter = 0;
+    clearNewPayloadValues () {
+      this.newPayloadFormat = null
+      this.newPayloadTransport = null
+      this.newPayloadOperatingSystem = null
+      this.newPayloadArchitecture = null
+      this.newPayloadVersion = null
+      this.newPayloadConfiguration = null
+      this.newPayloadBeaconInterval = 5
+      this.newPayloadJitter = 0
     },
-    closeNewPayloadWindow() {
-      this.clearNewPayloadValues();
-      this.isNewPayloadModalActive = false;
+    closeNewPayloadWindow () {
+      this.clearNewPayloadValues()
+      this.isNewPayloadModalActive = false
     }
   },
   watch: {
-    message() {
+    message () {
       if (this.message != null) {
         if (this.error) {
           this.$toast.open({
             duration: 5000,
             message: this.message,
-            type: "is-danger",
+            type: 'is-danger',
             queue: false
-          });
+          })
         } else {
           this.$toast.open({
             duration: 5000,
             message: this.message,
-            type: "is-success",
+            type: 'is-success',
             queue: false
-          });
+          })
         }
       }
-      this.message = null;
-      this.error = false;
+      this.message = null
+      this.error = false
     },
-    newPayloadAgentType() {
+    newPayloadAgentType () {
       if (this.newPayloadAgentType != null) {
-        this.newPayloadFormat = this.newPayloadAgentType.Formats[0];
-        this.newPayloadTransport = this.newPayloadAgentType.AvailableTransports[0];
-        this.newPayloadOperatingSystem = this.newPayloadAgentType.OperatingSystems[0];
-        this.newPayloadArchitecture = this.newPayloadAgentType.Architectures[0];
-        this.newPayloadVersion = this.newPayloadAgentType.Versions[0];
-        this.newPayloadConfiguration = this.newPayloadAgentType.Configurations[0];
-        this.newPayloadBeaconInterval = 5;
-        this.newPayloadJitter = 0;
+        this.newPayloadFormat = this.newPayloadAgentType.Formats[0]
+        this.newPayloadTransport = this.newPayloadAgentType.AvailableTransports[0]
+        this.newPayloadOperatingSystem = this.newPayloadAgentType.OperatingSystems[0]
+        this.newPayloadArchitecture = this.newPayloadAgentType.Architectures[0]
+        this.newPayloadVersion = this.newPayloadAgentType.Versions[0]
+        this.newPayloadConfiguration = this.newPayloadAgentType.Configurations[0]
+        this.newPayloadBeaconInterval = 5
+        this.newPayloadJitter = 0
       }
     }
   },
-  beforeMount() {
-    this.getPayloads();
+  beforeMount () {
+    this.getPayloads()
   }
-};
+}
 </script>

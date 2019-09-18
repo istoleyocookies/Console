@@ -82,7 +82,7 @@ export default {
     getIOCs () {
       this.loading = true
       console.log('sending getIOC')
-      this.$socket.emit('getIOC', { IocId: 'all' })
+      this.$socket.client.emit('getIOC', { IocId: 'all' })
       this.loading = false
     },
     findIOCs (query) {
