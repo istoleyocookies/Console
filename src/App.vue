@@ -46,7 +46,7 @@ export default {
       if (this.connected) {
         this.connectionError = false
         console.log('Connected. Getting Agents.')
-        this.$socket.emit('getAgent', { AgentId: 'all' })
+        this.$socket.client.emit('getAgent', { AgentId: 'all' })
         this.$toast.open({
           message: 'Connected to Faction!',
           type: 'is-success',

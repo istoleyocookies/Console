@@ -78,7 +78,7 @@ export default {
     getErrors () {
       this.loading = true
       console.log('sending getError')
-      this.$socket.emit('getErrorMessage', { ErrorMessageId: 'all' })
+      this.$socket.client.emit('getErrorMessage', { ErrorMessageId: 'all' })
       this.loading = false
     },
     findErrors (query) {

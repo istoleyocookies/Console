@@ -157,7 +157,7 @@ export default {
     getTransports () {
       this.loading = true
       console.log('sending get maybe')
-      this.$socket.emit('getTransport', { TransportId: 'all' })
+      this.$socket.client.emit('getTransport', { TransportId: 'all' })
       this.loading = false
     },
     findTransports (query) {
@@ -192,7 +192,7 @@ export default {
     },
     createTransport () {
       this.processing = true
-      this.$socket.emit('newTransport',
+      this.$socket.client.emit('newTransport',
         {
           'Name': this.newTransportName
         })
@@ -204,7 +204,7 @@ export default {
       console.log(state.target.checked)
       if (state.target.checked !== undefined) {
         console.log('[toggleTransport] transport enabled: ' + state.target.checked)
-        this.$socket.emit('updateTransport',
+        this.$socket.client.emit('updateTransport',
           {
             'TransportId': transportId,
             'Enabled': state.target.checked
@@ -213,7 +213,7 @@ export default {
     },
     hideTransport (id) {
       console.log('deleting payload id: ' + id)
-      this.$socket.emit('hideTransport', { TransportId: id })
+      this.$socket.client.emit('hideTransport', { TransportId: id })
     },
     closeNewTransportApiKeyWindow () {
       this.clearNewTransportApiKeyValues()

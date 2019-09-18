@@ -94,7 +94,7 @@ export default {
     getTasks () {
       this.loading = true
       console.log('sending getTask')
-      this.$socket.emit('getTask', { TaskId: 'all' })
+      this.$socket.client.emit('getTask', { TaskId: 'all' })
       this.loading = false
     },
     findTasks (query) {

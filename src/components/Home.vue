@@ -102,7 +102,7 @@ export default {
     getAgents () {
       this.loading = true
       console.log('sending get maybe')
-      this.$socket.emit('getAgent', { AgentId: 'all' })
+      this.$socket.client.emit('getAgent', { AgentId: 'all' })
       this.loading = false
     },
     findAgents (query) {
@@ -121,7 +121,7 @@ export default {
     },
     hideAgent (id) {
       console.log('deleting agent id: ' + id)
-      this.$socket.emit('hideAgent', { AgentId: id })
+      this.$socket.client.emit('hideAgent', { AgentId: id })
     },
     loadConsole (agent) {
       this.$router.push({ name: 'console', params: { AgentId: agent.Id } })
