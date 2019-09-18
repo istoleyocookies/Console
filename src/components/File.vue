@@ -103,7 +103,7 @@ export default {
     getFiles () {
       this.loading = true
       console.log('sending get maybe')
-      this.$socket.emit('getFile', { Filename: 'all' })
+      this.$socket.client.emit('getFile', { Filename: 'all' })
       this.loading = false
     },
     findFiles (query) {

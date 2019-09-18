@@ -43,7 +43,7 @@ export default {
       'clearMessages'
     ]),
     getMessagesForTask (taskId) {
-      this.$socket.emit('getTaskMessage', { TaskId: taskId })
+      this.$socket.client.emit('getTaskMessage', { TaskId: taskId })
     }
   },
   watch: {

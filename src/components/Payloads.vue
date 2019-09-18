@@ -299,7 +299,7 @@ export default {
     getPayloads () {
       this.loading = true
       console.log('sending get maybe')
-      this.$socket.emit('getPayload', { PayloadId: 'all' })
+      this.$socket.client.emit('getPayload', { PayloadId: 'all' })
       this.loading = false
     },
     findPayloads (query) {
@@ -321,7 +321,7 @@ export default {
         expirationDate = this.utcExpirationDate
       }
       console.log(expirationDate)
-      this.$socket.emit('newPayload',
+      this.$socket.client.emit('newPayload',
         {
           'Description': this.newPayloadDescription,
           'AgentType': this.newPayloadAgentType.Id,
@@ -345,7 +345,7 @@ export default {
       console.log(state.target.checked)
       if (state.target.checked !== undefined) {
         console.log('[togglePayload] payload enabled: ' + state.target.checked)
-        this.$socket.emit('updatePayload',
+        this.$socket.client.emit('updatePayload',
           {
             'Id': payloadId,
             'Enabled': state.target.checked
@@ -354,7 +354,7 @@ export default {
     },
     hidePayload (id) {
       console.log('deleting payload id: ' + id)
-      this.$socket.emit('hidePayload', { PayloadId: id })
+      this.$socket.client.emit('hidePayload', { PayloadId: id })
     },
     getAgentTypes () {
       axios.defaults.withCredentials = true

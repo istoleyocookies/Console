@@ -31,7 +31,7 @@ export default {
       this.$cookies.remove('UserRole')
       this.$cookies.remove('AccessKeyId')
       this.$cookies.remove('AccessSecret')
-      this.$socket.emit('logout')
+      this.$socket.client.emit('logout')
     }
   },
   watch: {

@@ -46,7 +46,7 @@ export default {
     ]),
     getErrorMessage (errorMessageId) {
       console.log('Get Error Message fired with id of ' + errorMessageId)
-      this.$socket.emit('getErrorMessage', { ErrorMessageId: errorMessageId })
+      this.$socket.client.emit('getErrorMessage', { ErrorMessageId: errorMessageId })
     }
   },
   watch: {

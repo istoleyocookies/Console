@@ -88,7 +88,7 @@ export default {
     },
     submitMessage (message) {
       console.log('Sumitting Message')
-      this.$socket.emit('newMessage', {
+      this.$socket.client.emit('newMessage', {
         AgentId: this.agent.Id,
         Content: this.content
       })
@@ -105,7 +105,7 @@ export default {
     agent () {
       if (this.agent != null) {
         console.log('joining room ' + this.agent.Id)
-        this.$socket.emit('joinAgent', { AgentId: this.agent.Id })
+        this.$socket.client.emit('joinAgent', { AgentId: this.agent.Id })
       }
     },
     agents () {
