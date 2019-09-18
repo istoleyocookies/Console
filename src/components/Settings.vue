@@ -193,7 +193,9 @@ export default {
   computed: {
     ...mapState({
       userId: state => state.faction.userId,
-      userRole: state => state.faction.userRole
+      userRole: state => state.faction.userRole,
+      accessKeyId: state => state.faction.accessKeyId,
+      accessSecret: state => state.faction.accessSecret
     })
   },
   methods: {
@@ -203,10 +205,7 @@ export default {
         axios.defaults.withCredentials = true
         axios
           .post(
-            process.env.VUE_APP_API_ENDPOINT +
-              '/user/' +
-              this.userId +
-              '/password/',
+            process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/password/?token=' + this.accessKeyId + ':' + this.accessSecret,
             {
               CurrentPassword: this.currentPassword,
               NewPassword: this.newPassword
@@ -237,7 +236,7 @@ export default {
       axios.defaults.withCredentials = true
       axios
         .get(
-          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/'
+          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/?token=' + this.accessKeyId + ':' + this.accessSecret
         )
         .then(
           function (response) {
@@ -257,7 +256,7 @@ export default {
       axios.defaults.withCredentials = true
       axios
         .post(
-          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/'
+          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/?token=' + this.accessKeyId + ':' + this.accessSecret
         )
         .then(
           function (response) {
@@ -281,12 +280,7 @@ export default {
       axios.defaults.withCredentials = true
       axios
         .delete(
-          process.env.VUE_APP_API_ENDPOINT +
-            '/user/' +
-            this.userId +
-            '/apikey/' +
-            apiKeyId +
-            '/'
+          process.env.VUE_APP_API_ENDPOINT + '/user/' + this.userId + '/apikey/' + apiKeyId + '/?token=' + this.accessKeyId + ':' + this.accessSecret
         )
         .then(
           function (response) {
@@ -310,7 +304,7 @@ export default {
     },
     getUsers () {
       axios.defaults.withCredentials = true
-      axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/').then(
+      axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/?token=' + this.accessKeyId + ':' + this.accessSecret).then(
         function (response) {
           console.log(response)
           if (!response.data.Success) {
@@ -328,7 +322,7 @@ export default {
         this.processing = true
         axios.defaults.withCredentials = true
         axios
-          .post(process.env.VUE_APP_API_ENDPOINT + '/user/', {
+          .post(process.env.VUE_APP_API_ENDPOINT + '/user/?token=' + this.accessKeyId + ':' + this.accessSecret, {
             Username: this.newUserName,
             RoleName: this.newUserRole,
             Password: this.newUserPassword
@@ -356,7 +350,7 @@ export default {
     deleteUser (userId) {
       axios.defaults.withCredentials = true
       axios
-        .delete(process.env.VUE_APP_API_ENDPOINT + '/user/' + userId + '/')
+        .delete(process.env.VUE_APP_API_ENDPOINT + '/user/?token=' + this.accessKeyId + ':' + this.accessSecret + userId + '/')
         .then(
           function (response) {
             console.log(response)
@@ -381,7 +375,7 @@ export default {
     },
     getUserRoles () {
       axios.defaults.withCredentials = true
-      axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/role/').then(
+      axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/role/?token=' + this.accessKeyId + ':' + this.accessSecret).then(
         function (response) {
           console.log(response)
           if (!response.data.Success) {
@@ -433,7 +427,6 @@ export default {
 
 <style scoped>
 .content-container {
-  margin-top: 10px;
   max-width: 860px;
   margin: 20px auto;
 }

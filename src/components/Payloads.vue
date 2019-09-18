@@ -271,7 +271,9 @@ export default {
   computed: {
     ...mapState({
       payloads: state => state.payloads.list,
-      userId: state => state.faction.userId
+      userId: state => state.faction.userId,
+      accessKeyId: state => state.faction.accessKeyId,
+      accessSecret: state => state.faction.accessSecret
     }),
     payloadsList () {
       if (this.showHidden) {
@@ -358,7 +360,7 @@ export default {
     },
     getAgentTypes () {
       axios.defaults.withCredentials = true
-      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/')
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
       ).then(function (response) {
         console.log(response)
         if (!response.data.Success) {
