@@ -152,14 +152,14 @@ export default {
     message () {
       if (this.message != null) {
         if (this.error) {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: this.message,
             type: 'is-danger',
             queue: false
           })
         } else {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: this.message,
             type: 'is-success',

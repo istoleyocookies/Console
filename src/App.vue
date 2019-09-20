@@ -47,7 +47,7 @@ export default {
         this.connectionError = false
         console.log('Connected. Getting Agents.')
         this.$socket.client.emit('getAgent', { AgentId: 'all' })
-        this.$toast.open({
+        this.$buefy.toast.open({
           message: 'Connected to Faction!',
           type: 'is-success',
           queue: false
@@ -61,7 +61,7 @@ export default {
       if (this.agentNotificationType === 'connected') {
         actiontext = 'GO'
       }
-      this.$snackbar.open({
+      this.$buefy.snackbar.open({
         duration: 5000,
         message: 'Agent ' + this.agentNotificationType + ': ' + this.agentNotification.Name,
         actionText: actiontext,
@@ -72,7 +72,7 @@ export default {
       })
     },
     payloadNotification () {
-      this.$snackbar.open({
+      this.$buefy.snackbar.open({
         duration: 5000,
         message: 'Payload updated: ' + this.payloadNotification.Name,
         actionText: 'GO',
@@ -83,7 +83,7 @@ export default {
       })
     },
     newErrorMessage () {
-      this.$snackbar.open({
+      this.$buefy.snackbar.open({
         duration: 10000,
         message: 'ERROR: ' + this.newErrorMessage.Message,
         actionText: 'GO',
