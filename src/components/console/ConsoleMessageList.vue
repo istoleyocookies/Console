@@ -21,19 +21,6 @@ export default {
   components: {
     appConsoleMessage: consolemessage
   }
-  // watch: {
-  //   'messages': {
-  //     immediate: true,
-  //     handler () {
-  //       console.log('Message list updated')
-  //       var messageList = this.$refs.messageList
-  //       if (typeof messageList !== 'undefined') {
-  //         messageList.scrollTop = messageList.scrollHeight
-  //       }
-  //       console.log('Scroolled')
-  //     }
-  //   }
-  // }
 }
 </script>
 

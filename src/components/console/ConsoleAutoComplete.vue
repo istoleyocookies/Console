@@ -1,7 +1,7 @@
 <template>
   <div class="autocomplete">
     <b-table :data="filteredCommands"
-             v-if="filteredCommands.length > 0 && commandSelected != true && input.length > 0"
+             v-if="filteredCommands.length > 0 && commandSelected !== true && input != null && input !== ''"
              class="autocomplete-table"
              :row-class="(row, index) => 'autocomplete-row'">
       <template slot-scope="props">
@@ -13,7 +13,7 @@
         </b-table-column>
       </template>
     </b-table>
-    <div v-if="filteredCommands.length == 1 && filteredCommands[0].Parameters.length > 0 && commandSelected == true">
+    <div v-if="filteredCommands.length === 1 && filteredCommands[0].Parameters.length > 0 && commandSelected === true">
       <b-table :data="filteredCommands[0].Parameters"
                class="autocomplete-table"
                :row-class="(row, index) => 'autocomplete-row'">
@@ -58,11 +58,12 @@ export default {
       }
     },
     commandSelected () {
-      if (this.input && this.input.indexOf(' ') > 1) {
-        return true
-      } else {
-        return false
+      if (this.input) {
+        if (this.input.indexOf(' ') > 1) {
+          return true
+        }
       }
+      return false
     }
   },
   methods: {
@@ -75,19 +76,7 @@ export default {
           return command
         }
       })
-    },
-    getCommands () {
-      console.log('sending getAgentCommands')
-      this.$socket.client.emit('getAgentCommands', { AgentId: this.agent.Id })
     }
-  },
-  beforeMount () {
-    this.getCommands()
-  },
-  beforeRouteLeave (to, from, next) {
-    console.log('leaving route, clearing stuff')
-    this.clearCommands()
-    next()
   }
 }
 </script>

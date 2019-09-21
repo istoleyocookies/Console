@@ -41,7 +41,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import axios from 'axios'
-console.log('Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
+console.log('[Login.vue] Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
 export default {
   data () {
     return {
@@ -76,12 +76,12 @@ export default {
       var userrole = this.$cookies.get('UserRole')
       var keyid = this.$cookies.get('AccessKeyId')
       var secret = this.$cookies.get('AccessSecret')
-      console.log('[Login:updateApiCookie] UserId from cookie: ' + userid)
-      console.log('[Login:updateApiCookie] UserRole from cookie: ' + userrole)
-      console.log('[Login:updateApiCookie] KeyId from cookie: ' + keyid)
-      console.log('[Login:updateApiCookie] Secret from cookie: ' + secret)
+      console.log('[Login.vue:updateApiCookie] UserId from cookie: ' + userid)
+      console.log('[Login.vue:updateApiCookie] UserRole from cookie: ' + userrole)
+      console.log('[Login.vue:updateApiCookie] KeyId from cookie: ' + keyid)
+      console.log('[Login.vue:updateApiCookie] Secret from cookie: ' + secret)
       if (keyid != null && secret != null) {
-        console.log('[Login:updateApiCookie] Trying to login')
+        console.log('[Login.vue:updateApiCookie] Trying to login')
         this.loginUser({
           username: this.username,
           userId: userid,
@@ -101,14 +101,13 @@ export default {
           'Username': this.username,
           'Password': this.password
         }).then(function (response) {
-        console.log(response)
         if (response.data.Success) {
-          console.log('[Login:submitLogin] Trying to login..')
-          console.log('[Login:submitLogin] UserId: ' + response.data.UserId)
-          console.log('[Login:submitLogin] Username: ' + response.data.Username)
-          console.log('[Login:submitLogin] UserRole: ' + response.data.UserRole)
-          console.log('[Login:submitLogin] AccessKeyId: ' + response.data.AccessKeyId)
-          console.log('[Login:submitLogin] AccessSecret: ' + response.data.AccessSecret)
+          console.log('[Login.vue:submitLogin] Trying to login..')
+          console.log('[Login.vue:submitLogin] UserId: ' + response.data.UserId)
+          console.log('[Login.vue:submitLogin] Username: ' + response.data.Username)
+          console.log('[Login.vue:submitLogin] UserRole: ' + response.data.UserRole)
+          console.log('[Login.vue:submitLogin] AccessKeyId: ' + response.data.AccessKeyId)
+          console.log('[Login.vue:submitLogin] AccessSecret: ' + response.data.AccessSecret)
           var loginSuccess = this.loginUser({
             username: response.data.Username,
             userId: response.data.UserId,
@@ -130,13 +129,12 @@ export default {
       )
     },
     redirect () {
-      console.log('[Login:Redirect] Params: ')
-      console.log(this.$route.query)
+      console.log('[Login.vue:Redirect] running..')
       if (this.$route.query.next) {
-        console.log('[Login:Redirect] Next is specified as ' + this.$route.query.next)
+        console.log('[Login.vue:Redirect] Next is specified as ' + this.$route.query.next)
         this.$router.push(this.$route.query.next)
       } else {
-        console.log('[Login:Redirect] Next is not specified. Going home')
+        console.log('[Login.vue:Redirect] Next is not specified. Going home')
         this.$router.push('/')
       }
     }
@@ -144,7 +142,7 @@ export default {
   watch: {
     connectionStatus () {
       if (this.connectionStatus.includes('Connected')) {
-        console.log('[Login:connectionStatus] - Connected. Setting cookies and redirecting')
+        console.log('[Login.vue:connectionStatus] - Connected. Setting cookies and redirecting')
         this.$cookies.set('Username', this.username, '30d')
         this.$cookies.set('UserId', this.userId, '30d')
         this.$cookies.set('UserRole', this.userRole, '30d')
@@ -152,7 +150,7 @@ export default {
         this.$cookies.set('AccessSecret', this.accessSecret, '30d')
         this.redirect()
       } else if (this.connectionStatus.includes('Error')) {
-        console.log('[Login:connectionStatus] - Connection in error state. Clearing cookies and token.')
+        console.log('[Login.vue:connectionStatus] - Connection in error state. Clearing cookies and token.')
         this.loginRunning = false
         this.error = true
         this.errorMessage = 'SocketIO connection failed.'

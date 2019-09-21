@@ -300,7 +300,7 @@ export default {
   methods: {
     getPayloads () {
       this.loading = true
-      console.log('sending get maybe')
+      console.log('[Payloads.vue] sending getPayloads')
       this.$socket.client.emit('getPayload', { PayloadId: 'all' })
       this.loading = false
     },
@@ -322,7 +322,6 @@ export default {
       if (this.utcExpirationDate != null) {
         expirationDate = this.utcExpirationDate
       }
-      console.log(expirationDate)
       this.$socket.client.emit('newPayload',
         {
           'Description': this.newPayloadDescription,
@@ -343,10 +342,9 @@ export default {
       this.closeNewPayloadWindow()
     },
     togglePayload (payloadId, state) {
-      console.log('[togglePayload] got payload: ' + payloadId)
-      console.log(state.target.checked)
+      console.log('[Payloads.vue] togglePayload got payload: ' + payloadId)
       if (state.target.checked !== undefined) {
-        console.log('[togglePayload] payload enabled: ' + state.target.checked)
+        console.log('[Payloads.vue] togglePayload is payload enabled?: ' + state.target.checked)
         this.$socket.client.emit('updatePayload',
           {
             'Id': payloadId,
@@ -355,14 +353,13 @@ export default {
       }
     },
     hidePayload (id) {
-      console.log('deleting payload id: ' + id)
+      console.log('[Payloads.vue] hidePayload firing with payload id: ' + id)
       this.$socket.client.emit('hidePayload', { PayloadId: id })
     },
     getAgentTypes () {
       axios.defaults.withCredentials = true
       axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
       ).then(function (response) {
-        console.log(response)
         if (!response.data.Success) {
           this.error = true
           this.message = response.data.Message

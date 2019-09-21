@@ -77,7 +77,7 @@ export default {
   methods: {
     getErrors () {
       this.loading = true
-      console.log('sending getError')
+      console.log('[ErrorMessageList.vue] sending getError')
       this.$socket.client.emit('getErrorMessage', { ErrorMessageId: 'all' })
       this.loading = false
     },
@@ -108,7 +108,6 @@ export default {
     },
     initSort () {
       this.$refs.table.initSort()
-      console.log('[ErrorList:initSort] - Table sorted.')
     }
   },
   beforeMount () {

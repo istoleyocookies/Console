@@ -36,7 +36,7 @@ export default {
   },
   watch: {
     loggedIn () {
-      console.log('loggedIn chanced')
+      console.log('[Logout.vue] loggedIn changed')
       if (this.loggedIn === false) {
         this.clearLoginState()
         this.$router.push({ name: 'home' })

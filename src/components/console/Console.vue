@@ -60,47 +60,50 @@ export default {
       }
     }
   },
-  created () {
-    console.log('page created: ' + this.$route.params.AgentId)
-    this.updateCurrentAgentId(this.$route.params.AgentId)
-  },
-  beforeRouteLeave (to, from, next) {
-    console.log('leaving route, clearing stuff')
-    this.clearCurrentAgent()
-    this.clearMessages()
-    next()
-  },
   methods: {
     ...mapActions([
       'updateCurrentAgentId',
       'clearCurrentAgent',
-      'clearMessages'
+      'clearMessages',
+      'clearCommands'
     ]),
-    toggleDetails () {
-      this.showAgentDetails = !this.showAgentDetails
+    getCommands () {
+      console.log('[Console.vue] sending getAgentCommands with AgentId ' + this.agent.Id)
+      this.$socket.client.emit('getAgentCommands', { AgentId: this.agent.Id })
     }
+  },
+  created () {
+    console.log('[Console.vue] Created. Updating agent and getting commands for agent id: ' + this.$route.params.AgentId)
+    this.updateCurrentAgentId(this.$route.params.AgentId)
+    this.getCommands(this.$route.params.AgentId)
+  },
+  beforeRouteLeave (to, from, next) {
+    console.log('[Console.vue] leaving route, clearing currentAgent and messages')
+    this.clearCurrentAgent()
+    this.clearMessages()
+    this.clearCommands()
+    next()
   },
   watch: {
     $route () {
-      console.log('route update route id: ' + this.$route.params.AgentId)
-      console.log('page loaded. agents updated: ' + this.agents.updated)
       this.updateCurrentAgentId(this.$route.params.AgentId)
       this.clearMessages()
+      this.getCommands(this.$route.params.AgentId)
     },
     agent () {
       if (this.agent != null) {
-        console.log('joining room ' + this.agent.Id)
+        console.log('[Console.vue] joining room ' + this.agent.Id)
         this.$socket.client.emit('joinAgent', { AgentId: this.agent.Id })
       }
     },
     agents () {
-      console.log('agents updated, setting current agents')
-      console.log(this.agents)
+      console.log('[Console.vue] agents updated, setting current agents')
       this.updateCurrentAgentId(this.$route.params.AgentId)
+      this.getCommands(this.$route.params.AgentId)
     },
     messages () {
       this.$nextTick(function () {
-        console.log('Console: Messages updated')
+        console.log('[Console.vue] Messages updated')
         var messageList = this.$refs.console
         if (messageList.scrollHeight !== undefined) {
           messageList.scrollTop = messageList.scrollHeight

@@ -104,7 +104,7 @@ export default {
   methods: {
     getFiles () {
       this.loading = true
-      console.log('sending get maybe')
+      console.log('[File.vue] sending getFile')
       this.$socket.client.emit('getFile', { Filename: 'all' })
       this.loading = false
     },

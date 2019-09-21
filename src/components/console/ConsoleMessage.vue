@@ -42,7 +42,7 @@ export default {
     checkJson () {
       try {
         var jsonContent = JSON.parse(this.display)
-        console.log('Content is json')
+        console.log('[ConsoleMessage.vue] Content is json')
         console.log(jsonContent[0])
         var keys = Object.keys(jsonContent[0])
         console.log(keys)
@@ -57,13 +57,13 @@ export default {
         this.tableData = jsonContent
         this.isJson = true
       } catch (err) {
-        console.log('Content is not json')
+        console.log('[ConsoleMessage.vue] Content is not json')
         this.isJson = false
       }
     }
   },
   created () {
-    console.log('checking if content is json')
+    console.log('[ConsoleMessage.vue] checking if content is json')
     this.checkJson()
   }
 }

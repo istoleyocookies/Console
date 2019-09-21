@@ -33,7 +33,7 @@ export default {
   methods: {
     submitMessage () {
       if (this.content.length > 0) {
-        console.log('Submitting Message')
+        console.log('[ConsoleInput.vue] Submitting Message')
         this.$socket.client.emit('newMessage', {
           AgentId: this.agent.Id,
           Content: this.content
