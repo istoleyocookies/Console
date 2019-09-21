@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import consoleMessageList from './ConsoleMessageList'
+import consoleMessageList from './console/ConsoleMessageList'
 import { mapState, mapActions } from 'vuex'
 
 export default {

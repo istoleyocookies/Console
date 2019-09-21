@@ -1,16 +1,13 @@
 <template>
   <section class="message">
-    <!-- TODO: Add Message ID in here once we have full path working -->
     <div  v-if="type === 'AgentTask'">
       <p>[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]</p>
       <p class="message-text">F2> {{ display }}</p>
     </div>
-    <div v-else-if="type === 'HelpResponse'">
-      <p class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}] </p>
-      <div class="response-text help-text">{{ display }}</div>
-    </div>
     <div v-else>
-      <p v-if="type === 'ShowMessage'" class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]</p>
+      <p v-if="type === 'HelpResponse' || type === 'ShowMessage'"
+        class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]
+      </p>
       <p v-else class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}] [#{{ taskId }}]</p>
       <b-table
         v-if="tableData"
@@ -111,7 +108,7 @@ export default {
     color: #aaaaaa;
   }
 
-  .help-text {
+  .content {
     white-space: pre-wrap;
   }
 </style>

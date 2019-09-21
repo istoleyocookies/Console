@@ -128,6 +128,7 @@ const agents = {
   state: {
     list: [],
     currentAgent: null,
+    commandsList: [],
     updated: null,
     notificationType: null,
     agentNotification: null
@@ -182,6 +183,10 @@ const agents = {
         state.agentNotification = agentUpdated
       }
     },
+    SOCKET_GETAGENTCOMMANDS: (state, commands) => {
+      console.log('socket_getagentcommands got: ' + commands)
+      state.commandsList = commands
+    },
     updateCurrentAgent: (state, agentId) => {
       console.log('[getAgentById] running for id: ' + agentId)
       console.log(state.list)
@@ -198,6 +203,9 @@ const agents = {
     clearCurrentAgent: (state) => {
       console.log('[clearCurrentAgent] nulling current agent')
       state.currentAgent = null
+    },
+    clearCommands: (state) => {
+      state.commandList = []
     }
   },
   actions: {
@@ -207,6 +215,9 @@ const agents = {
     },
     clearCurrentAgent: (context) => {
       context.commit('clearCurrentAgent')
+    },
+    clearCommands: (context) => {
+      context.commit('clearCommands')
     },
     socket_getAgent: (context, agentObject) => {
       console.log('socket_get action fired')

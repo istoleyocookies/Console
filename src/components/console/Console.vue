@@ -11,15 +11,7 @@
             <app-console-message-list ref="messageList" :messages="messages"></app-console-message-list>
           </div>
           <div class="console-input">
-            <div class="field">
-              <div class="control has-icons-left">
-                <input type="text" class="input" v-model="content" v-on:keyup.enter="submitMessage" />
-                <span class="icon is-left">
-                  <i class="mdi mdi-chevron-right mdi-24px"></i>
-                </span>
-                <a @click="submitMessage" class="button is-dark is-radiusless">Send</a>
-              </div>
-            </div>
+            <app-console-input :agent="agent"></app-console-input>
           </div>
         </div>
       </div>
@@ -32,14 +24,14 @@
 
 <script>
 import consoleMessageList from './ConsoleMessageList'
-import agentList from './AgentList'
+import consoleInput from './ConsoleInput'
+import agentList from '../AgentList'
 import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'console',
   data () {
     return {
-      content: null,
       showAgentDetails: false,
       getAgentFired: null,
       query: null
@@ -47,6 +39,7 @@ export default {
   },
   components: {
     appConsoleMessageList: consoleMessageList,
+    appConsoleInput: consoleInput,
     appAgentList: agentList
   },
   computed: {
@@ -85,14 +78,6 @@ export default {
     ]),
     toggleDetails () {
       this.showAgentDetails = !this.showAgentDetails
-    },
-    submitMessage (message) {
-      console.log('Sumitting Message')
-      this.$socket.client.emit('newMessage', {
-        AgentId: this.agent.Id,
-        Content: this.content
-      })
-      this.content = ''
     }
   },
   watch: {
@@ -163,45 +148,6 @@ export default {
 
 .console-title {
   color: #eff7f7;
-}
-
-.console-input {
-  border-top: solid;
-  border-top-color: #034748;
-  border-top-width: 1px;
-  position: fixed;
-  right: 0;
-  left: 25%;
-  bottom: 0;
-  height: 40px;
-}
-
-.console-input .control {
-  width: 100%;
-  height: 40px;
-}
-
-.console-input .input {
-  background: #012121;
-  height: 39px;
-  color: #eff7f7;
-  font-family: "Source Code Pro", "Lucida Console", Monaco, monospace;
-  border: none;
-  position: fixed;
-  right: 0;
-  left: 25%;
-  bottom: 0;
-  border-radius: 0;
-}
-
-.console-input input:focus {
-  box-shadow: 0;
-}
-
-.console-input .button {
-  position: fixed;
-  right: 0;
-  height: 40px;
 }
 
 @media only screen and (max-width: 1023px) {
