@@ -101,7 +101,7 @@ export default {
   methods: {
     getAgents () {
       this.loading = true
-      console.log('sending get maybe')
+      console.log('[Home.vue] sending getAgent')
       this.$socket.client.emit('getAgent', { AgentId: 'all' })
       this.loading = false
     },

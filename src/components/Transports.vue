@@ -156,7 +156,7 @@ export default {
     ]),
     getTransports () {
       this.loading = true
-      console.log('sending get maybe')
+      console.log('[Transports.vue] sending getTransport')
       this.$socket.client.emit('getTransport', { TransportId: 'all' })
       this.loading = false
     },
@@ -200,10 +200,9 @@ export default {
       this.closeNewTransportWindow()
     },
     toggleTransport (transportId, state) {
-      console.log('[toggleTransport] got transport: ' + transportId)
-      console.log(state.target.checked)
+      console.log('[Transports.vue] toggleTransport got id: ' + transportId)
       if (state.target.checked !== undefined) {
-        console.log('[toggleTransport] transport enabled: ' + state.target.checked)
+        console.log('[Transports.vue] toggleTransport is transport enabled?: ' + state.target.checked)
         this.$socket.client.emit('updateTransport',
           {
             'TransportId': transportId,
@@ -212,7 +211,7 @@ export default {
       }
     },
     hideTransport (id) {
-      console.log('deleting payload id: ' + id)
+      console.log('[Transports.vue] hideTransport got id: ' + id)
       this.$socket.client.emit('hideTransport', { TransportId: id })
     },
     closeNewTransportApiKeyWindow () {
@@ -225,10 +224,9 @@ export default {
     },
     initSort () {
       this.$refs.table.initSort()
-      console.log('[TransportList:initSort] - Table sorted.')
     }
   },
-  wactch: {
+  watch: {
     newTransportId () {
       if (this.newTransportId != null) {
         this.isNewTransportApiModalActive = true

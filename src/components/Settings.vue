@@ -214,7 +214,6 @@ export default {
           .then(
             function (response) {
               this.currentPassword = this.newPassword = this.confirmPassword = null
-              console.log(response)
               if (!response.data.Success) {
                 this.error = true
               }
@@ -240,7 +239,6 @@ export default {
         )
         .then(
           function (response) {
-            console.log(response)
             if (!response.data.Success) {
               this.error = true
               this.message = response.data.Message
@@ -260,13 +258,11 @@ export default {
         )
         .then(
           function (response) {
-            console.log(response)
             if (!response.data.Success) {
               this.error = true
               this.message = response.data.Message
               this.proccessing = false
             } else {
-              console.log('pop api window')
               this.newApiKeyName = response.data.Name
               this.newApiKeySecret = response.data.Secret
               this.isNewApiKeyModalActive = true
@@ -284,7 +280,6 @@ export default {
         )
         .then(
           function (response) {
-            console.log(response)
             if (!response.data.Success) {
               this.error = true
             }
@@ -306,7 +301,6 @@ export default {
       axios.defaults.withCredentials = true
       axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/?token=' + this.accessKeyId + ':' + this.accessSecret).then(
         function (response) {
-          console.log(response)
           if (!response.data.Success) {
             this.error = true
             this.message = response.data.Message
@@ -329,7 +323,6 @@ export default {
           })
           .then(
             function (response) {
-              console.log(response)
               if (!response.data.Success) {
                 this.error = true
                 this.message = response.data.Message
@@ -353,7 +346,6 @@ export default {
         .delete(process.env.VUE_APP_API_ENDPOINT + '/user/?token=' + this.accessKeyId + ':' + this.accessSecret + userId + '/')
         .then(
           function (response) {
-            console.log(response)
             if (!response.data.Success) {
               this.error = true
             }
@@ -377,7 +369,6 @@ export default {
       axios.defaults.withCredentials = true
       axios.get(process.env.VUE_APP_API_ENDPOINT + '/user/role/?token=' + this.accessKeyId + ':' + this.accessSecret).then(
         function (response) {
-          console.log(response)
           if (!response.data.Success) {
             this.error = true
             this.message = response.data.Message

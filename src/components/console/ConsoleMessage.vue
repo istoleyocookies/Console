@@ -1,16 +1,13 @@
 <template>
   <section class="message">
-    <!-- TODO: Add Message ID in here once we have full path working -->
     <div  v-if="type === 'AgentTask'">
       <p>[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]</p>
       <p class="message-text">F2> {{ display }}</p>
     </div>
-    <div v-else-if="type === 'HelpResponse'">
-      <p class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}] </p>
-      <div class="response-text help-text">{{ display }}</div>
-    </div>
     <div v-else>
-      <p v-if="type === 'ShowMessage'" class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]</p>
+      <p v-if="type === 'HelpResponse' || type === 'ShowMessage'"
+        class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]
+      </p>
       <p v-else class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}] [#{{ taskId }}]</p>
       <b-table
         v-if="tableData"
@@ -45,7 +42,7 @@ export default {
     checkJson () {
       try {
         var jsonContent = JSON.parse(this.display)
-        console.log('Content is json')
+        console.log('[ConsoleMessage.vue] Content is json')
         console.log(jsonContent[0])
         var keys = Object.keys(jsonContent[0])
         console.log(keys)
@@ -60,13 +57,13 @@ export default {
         this.tableData = jsonContent
         this.isJson = true
       } catch (err) {
-        console.log('Content is not json')
+        console.log('[ConsoleMessage.vue] Content is not json')
         this.isJson = false
       }
     }
   },
   created () {
-    console.log('checking if content is json')
+    console.log('[ConsoleMessage.vue] checking if content is json')
     this.checkJson()
   }
 }
@@ -111,7 +108,7 @@ export default {
     color: #aaaaaa;
   }
 
-  .help-text {
+  .content {
     white-space: pre-wrap;
   }
 </style>

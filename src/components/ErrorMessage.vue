@@ -33,8 +33,6 @@ export default {
     })
   },
   created () {
-    console.log('page created: ' + this.$route.params.ErrorMessageId)
-    console.log('running getErrorMessage')
     this.updateCurrentErrorMessage(this.$route.params.ErrorMessageId)
     if (this.currentErrorMessage == null) {
       this.getErrorMessage(this.$route.params.ErrorMessageId)
@@ -45,13 +43,12 @@ export default {
       'updateCurrentErrorMessage'
     ]),
     getErrorMessage (errorMessageId) {
-      console.log('Get Error Message fired with id of ' + errorMessageId)
+      console.log('[ErrorMessage.vue] Get Error Message fired with id of ' + errorMessageId)
       this.$socket.client.emit('getErrorMessage', { ErrorMessageId: errorMessageId })
     }
   },
   watch: {
     $route () {
-      console.log('route update route id: ' + this.$route.params.ErrorMessageId)
       this.getErrorMessage(this.$route.params.ErrorMessageId)
     },
     errorMessages () {

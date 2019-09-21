@@ -15,9 +15,9 @@
 <script>
 import Navbar from './components/Navbar'
 import { mapState } from 'vuex'
-console.log('NodeJS Environment Setting: ' + process.env.NODE_ENV)
-console.log('API Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
-console.log('SocketIO Endpoint: ' + process.env.VUE_APP_SOCKETIO_ENDPOINT)
+console.log('[App.vue] NodeJS Environment Setting: ' + process.env.NODE_ENV)
+console.log('[App.vue] API Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
+console.log('[App.vue] SocketIO Endpoint: ' + process.env.VUE_APP_SOCKETIO_ENDPOINT)
 export default {
   name: 'App',
   data () {
@@ -45,7 +45,7 @@ export default {
     connected () {
       if (this.connected) {
         this.connectionError = false
-        console.log('Connected. Getting Agents.')
+        console.log('[App.vue] Connected. Getting Agents.')
         this.$socket.client.emit('getAgent', { AgentId: 'all' })
         this.$buefy.toast.open({
           message: 'Connected to Faction!',
