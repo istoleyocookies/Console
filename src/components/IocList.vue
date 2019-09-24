@@ -81,8 +81,8 @@ export default {
   methods: {
     getIOCs () {
       this.loading = true
-      console.log('sending getIOC')
-      this.$socket.emit('getIOC', { IocId: 'all' })
+      console.log('[IocList.vue] sending getIOC')
+      this.$socket.client.emit('getIOC', { IocId: 'all' })
       this.loading = false
     },
     findIOCs (query) {
@@ -112,7 +112,6 @@ export default {
     },
     initSort () {
       this.$refs.table.initSort()
-      console.log('[IOCList:initSort] - Table sorted.')
     }
   },
   beforeMount () {

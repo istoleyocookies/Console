@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import consoleMessageList from './ConsoleMessageList'
+import consoleMessageList from './console/ConsoleMessageList'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -30,11 +30,10 @@ export default {
     })
   },
   created () {
-    console.log('page created: ' + this.$route.params.TaskId)
     this.getMessagesForTask(this.$route.params.TaskId)
   },
   beforeRouteLeave (to, from, next) {
-    console.log('leaving route, clearing stuff')
+    console.log('[TaskView.vue] leaving route, clearing messages')
     this.clearMessages()
     next()
   },
@@ -43,12 +42,11 @@ export default {
       'clearMessages'
     ]),
     getMessagesForTask (taskId) {
-      this.$socket.emit('getTaskMessage', { TaskId: taskId })
+      this.$socket.client.emit('getTaskMessage', { TaskId: taskId })
     }
   },
   watch: {
     $route () {
-      console.log('route update route id: ' + this.$route.params.TaskId)
       this.getMessagesForTask(this.$route.params.TaskId)
       this.clearMessages()
     }

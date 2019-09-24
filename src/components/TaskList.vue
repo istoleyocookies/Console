@@ -93,8 +93,8 @@ export default {
   methods: {
     getTasks () {
       this.loading = true
-      console.log('sending getTask')
-      this.$socket.emit('getTask', { TaskId: 'all' })
+      console.log('[TaskList.vue] sending getTask')
+      this.$socket.client.emit('getTask', { TaskId: 'all' })
       this.loading = false
     },
     findTasks (query) {
@@ -124,7 +124,6 @@ export default {
     },
     initSort () {
       this.$refs.table.initSort()
-      console.log('[TaskList:initSort] - Table sorted.')
     }
   },
   beforeMount () {

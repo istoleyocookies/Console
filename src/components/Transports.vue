@@ -156,8 +156,8 @@ export default {
     ]),
     getTransports () {
       this.loading = true
-      console.log('sending get maybe')
-      this.$socket.emit('getTransport', { TransportId: 'all' })
+      console.log('[Transports.vue] sending getTransport')
+      this.$socket.client.emit('getTransport', { TransportId: 'all' })
       this.loading = false
     },
     findTransports (query) {
@@ -192,7 +192,7 @@ export default {
     },
     createTransport () {
       this.processing = true
-      this.$socket.emit('newTransport',
+      this.$socket.client.emit('newTransport',
         {
           'Name': this.newTransportName
         })
@@ -200,11 +200,10 @@ export default {
       this.closeNewTransportWindow()
     },
     toggleTransport (transportId, state) {
-      console.log('[toggleTransport] got transport: ' + transportId)
-      console.log(state.target.checked)
+      console.log('[Transports.vue] toggleTransport got id: ' + transportId)
       if (state.target.checked !== undefined) {
-        console.log('[toggleTransport] transport enabled: ' + state.target.checked)
-        this.$socket.emit('updateTransport',
+        console.log('[Transports.vue] toggleTransport is transport enabled?: ' + state.target.checked)
+        this.$socket.client.emit('updateTransport',
           {
             'TransportId': transportId,
             'Enabled': state.target.checked
@@ -212,8 +211,8 @@ export default {
       }
     },
     hideTransport (id) {
-      console.log('deleting payload id: ' + id)
-      this.$socket.emit('hideTransport', { TransportId: id })
+      console.log('[Transports.vue] hideTransport got id: ' + id)
+      this.$socket.client.emit('hideTransport', { TransportId: id })
     },
     closeNewTransportApiKeyWindow () {
       this.clearNewTransportApiKeyValues()
@@ -225,10 +224,9 @@ export default {
     },
     initSort () {
       this.$refs.table.initSort()
-      console.log('[TransportList:initSort] - Table sorted.')
     }
   },
-  wactch: {
+  watch: {
     newTransportId () {
       if (this.newTransportId != null) {
         this.isNewTransportApiModalActive = true

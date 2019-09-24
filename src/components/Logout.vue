@@ -31,12 +31,12 @@ export default {
       this.$cookies.remove('UserRole')
       this.$cookies.remove('AccessKeyId')
       this.$cookies.remove('AccessSecret')
-      this.$socket.emit('logout')
+      this.$socket.client.emit('logout')
     }
   },
   watch: {
     loggedIn () {
-      console.log('loggedIn chanced')
+      console.log('[Logout.vue] loggedIn changed')
       if (this.loggedIn === false) {
         this.clearLoginState()
         this.$router.push({ name: 'home' })

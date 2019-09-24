@@ -44,8 +44,6 @@ export default {
     })
   },
   created () {
-    console.log('page created: ' + this.$route.params.IocId)
-    console.log('running getIoc')
     this.updateCurrentIoc(this.$route.params.IocId)
     if (this.currentIoc == null) {
       this.getIoc(this.$route.params.IocId)
@@ -56,13 +54,12 @@ export default {
       'updateCurrentIoc'
     ]),
     getIoc (iocId) {
-      console.log('Get Ioc fired with id of ' + iocId)
-      this.$socket.emit('getIoc', { IocId: iocId })
+      console.log('[IOC.vue] getIOC fired with id: ' + iocId)
+      this.$socket.client.emit('getIoc', { IocId: iocId })
     }
   },
   watch: {
     $route () {
-      console.log('route update route id: ' + this.$route.params.IocId)
       this.getIoc(this.$route.params.IocId)
     },
     iocs () {

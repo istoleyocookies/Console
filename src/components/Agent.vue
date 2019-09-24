@@ -1,6 +1,9 @@
 <template>
   <li>
-    <router-link class="agent-link" :to="{ name: 'console', params: {AgentId: agent.Id}}">
+    <router-link
+      class="agent-link has-text-grey"
+      :to="{ name: 'console', params: {AgentId: agent.Id}}"
+    >
       <div class="columns is-paddingless is-marginless">
         <div class="column is-paddingless is-marginless">
           <p>
@@ -10,19 +13,31 @@
         <div class="column is-paddingless is-marginless">
           <p class="tags has-addons is-pulled-right">
             <span class="tag is-danger" v-if="agent.Admin">Admin</span>
-            <span class="tag">
-              <i v-bind:class="osIcon" v-bind:title="agent.OperatingSystem"></i>
-            </span>
           </p>
         </div>
       </div>
       <div class="columns is-paddingless is-marginless">
         <div class="column is-paddingless is-marginless">
           <p>
-            {{ agent.Username }}@{{ agent.Hostname }}
+            <b-icon size="is-small" icon="account"></b-icon>
+            {{ agent.Username }}
           </p>
-          <span>{{ agent.Transport.Name }}</span>
-          <span class="checkin-date is-pulled-right">{{ agent.LastCheckin | formatDateTime }}</span>
+          <p>
+            <span class="icon is-small">
+              <i v-bind:class="osIcon" v-bind:title="agent.OperatingSystem"></i>
+            </span>
+            {{ agent.Hostname }} (PID: {{ agent.Pid }})
+          </p>
+          <p>
+            <span>
+              <b-icon size="is-small" icon="earth"></b-icon>
+              {{ agent.Transport.Name }}
+            </span>
+            <span class="checkin-date is-pulled-right">
+              <b-icon size="is-small" icon="clock-outline"></b-icon>
+              {{ agent.LastCheckin | formatDateTime }}
+            </span>
+          </p>
         </div>
       </div>
     </router-link>
@@ -31,9 +46,7 @@
 
 <script>
 export default {
-  props: [
-    'agent'
-  ],
+  props: ['agent'],
   computed: {
     osIcon () {
       if (this.agent.OperatingSystem.includes('indows')) {
@@ -51,29 +64,26 @@ export default {
 </script>
 
 <style scoped>
-  li {
-    padding: 0;
-  }
+li {
+  padding: 0;
+}
 
-  a:hover {
-    background: #edf1f4;
-  }
+a:hover {
+  color: #121212 !important;
+  background: #edf1f4;
+}
 
-  .router-link-exact-active {
-    background: #dce4ea;
-  }
+.router-link-exact-active {
+  color: #121212 !important;
+  background: #dce4ea;
+}
 
-  .agent-link {
-    max-height: 100px;
+@media only screen and (max-width: 1407px) {
+  .checkin-date {
+    display: block;
+    float: none !important;
   }
-
-  @media only screen and (max-width: 1407px) {
-    .checkin-date {
-      display: block;
-      float: none !important;
-    }
-  }
-  @media only screen and (min-width: 1408px) and (max-width: 1524px) {
-
-  }
+}
+@media only screen and (min-width: 1408px) and (max-width: 1524px) {
+}
 </style>

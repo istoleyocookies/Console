@@ -89,7 +89,9 @@ export default {
   computed: {
     ...mapState({
       files: state => state.files.list,
-      userId: state => state.faction.userId
+      userId: state => state.faction.userId,
+      accessKeyId: state => state.faction.accessKeyId,
+      accessSecret: state => state.faction.accessSecret
     }),
     filteredFiles (text) {
       if (this.query) {
@@ -102,8 +104,8 @@ export default {
   methods: {
     getFiles () {
       this.loading = true
-      console.log('sending get maybe')
-      this.$socket.emit('getFile', { Filename: 'all' })
+      console.log('[File.vue] sending getFile')
+      this.$socket.client.emit('getFile', { Filename: 'all' })
       this.loading = false
     },
     findFiles (query) {
@@ -127,7 +129,7 @@ export default {
         formData.append('files', file)
       }
       axios.defaults.withCredentials = true
-      axios.post((process.env.VUE_APP_API_ENDPOINT + '/file/'),
+      axios.post((process.env.VUE_APP_API_ENDPOINT + '/file/?token=' + this.accessKeyId + ':' + this.accessSecret),
         formData,
         {
           headers: {
@@ -150,14 +152,14 @@ export default {
     message () {
       if (this.message != null) {
         if (this.error) {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: this.message,
             type: 'is-danger',
             queue: false
           })
         } else {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: this.message,
             type: 'is-success',

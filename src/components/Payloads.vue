@@ -271,7 +271,9 @@ export default {
   computed: {
     ...mapState({
       payloads: state => state.payloads.list,
-      userId: state => state.faction.userId
+      userId: state => state.faction.userId,
+      accessKeyId: state => state.faction.accessKeyId,
+      accessSecret: state => state.faction.accessSecret
     }),
     payloadsList () {
       if (this.showHidden) {
@@ -298,8 +300,8 @@ export default {
   methods: {
     getPayloads () {
       this.loading = true
-      console.log('sending get maybe')
-      this.$socket.emit('getPayload', { PayloadId: 'all' })
+      console.log('[Payloads.vue] sending getPayloads')
+      this.$socket.client.emit('getPayload', { PayloadId: 'all' })
       this.loading = false
     },
     findPayloads (query) {
@@ -320,8 +322,7 @@ export default {
       if (this.utcExpirationDate != null) {
         expirationDate = this.utcExpirationDate
       }
-      console.log(expirationDate)
-      this.$socket.emit('newPayload',
+      this.$socket.client.emit('newPayload',
         {
           'Description': this.newPayloadDescription,
           'AgentType': this.newPayloadAgentType.Id,
@@ -341,11 +342,10 @@ export default {
       this.closeNewPayloadWindow()
     },
     togglePayload (payloadId, state) {
-      console.log('[togglePayload] got payload: ' + payloadId)
-      console.log(state.target.checked)
+      console.log('[Payloads.vue] togglePayload got payload: ' + payloadId)
       if (state.target.checked !== undefined) {
-        console.log('[togglePayload] payload enabled: ' + state.target.checked)
-        this.$socket.emit('updatePayload',
+        console.log('[Payloads.vue] togglePayload is payload enabled?: ' + state.target.checked)
+        this.$socket.client.emit('updatePayload',
           {
             'Id': payloadId,
             'Enabled': state.target.checked
@@ -353,14 +353,13 @@ export default {
       }
     },
     hidePayload (id) {
-      console.log('deleting payload id: ' + id)
-      this.$socket.emit('hidePayload', { PayloadId: id })
+      console.log('[Payloads.vue] hidePayload firing with payload id: ' + id)
+      this.$socket.client.emit('hidePayload', { PayloadId: id })
     },
     getAgentTypes () {
       axios.defaults.withCredentials = true
-      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/')
+      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
       ).then(function (response) {
-        console.log(response)
         if (!response.data.Success) {
           this.error = true
           this.message = response.data.Message
@@ -375,13 +374,14 @@ export default {
       this.isNewPayloadModalActive = true
     },
     clearNewPayloadValues () {
-      this.newPayloadAgentTypeFormat = null
+      this.newPayloadFormat = null
       this.newPayloadTransport = null
-      this.newPayloadDescription = null
-      this.newPayloadAgentType = null
+      this.newPayloadOperatingSystem = null
+      this.newPayloadArchitecture = null
+      this.newPayloadVersion = null
+      this.newPayloadConfiguration = null
       this.newPayloadBeaconInterval = 5
       this.newPayloadJitter = 0
-      this.newPayloadExpirationDate = null
     },
     closeNewPayloadWindow () {
       this.clearNewPayloadValues()
@@ -392,14 +392,14 @@ export default {
     message () {
       if (this.message != null) {
         if (this.error) {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: this.message,
             type: 'is-danger',
             queue: false
           })
         } else {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: this.message,
             type: 'is-success',
@@ -409,6 +409,18 @@ export default {
       }
       this.message = null
       this.error = false
+    },
+    newPayloadAgentType () {
+      if (this.newPayloadAgentType != null) {
+        this.newPayloadFormat = this.newPayloadAgentType.Formats[0]
+        this.newPayloadTransport = this.newPayloadAgentType.AvailableTransports[0]
+        this.newPayloadOperatingSystem = this.newPayloadAgentType.OperatingSystems[0]
+        this.newPayloadArchitecture = this.newPayloadAgentType.Architectures[0]
+        this.newPayloadVersion = this.newPayloadAgentType.Versions[0]
+        this.newPayloadConfiguration = this.newPayloadAgentType.Configurations[0]
+        this.newPayloadBeaconInterval = 5
+        this.newPayloadJitter = 0
+      }
     }
   },
   beforeMount () {
