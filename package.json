@@ -9,7 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@mdi/font": "^4.6.95",
+    "@mdi/font": "^4.7.95",
     "axios": "^0.19.0",
     "buefy": "^0.8.8",
     "bulma-calendar": "^6.0.6",
