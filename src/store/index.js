@@ -356,7 +356,12 @@ const iocs = {
 const payloads = {
   state: {
     list: [],
-    payloadNotification: null
+    payloadNotification: null,
+    isDevPayloadModalActive: false,
+    devPayloadKey: null,
+    devPayloadJitter: null,
+    devPayloadBeaconInterval: null,
+    devPayloadExpirationDate: null
   },
   mutations: {
     SOCKET_GETPAYLOAD: (state, payloadObjects) => {
@@ -366,6 +371,14 @@ const payloads = {
     SOCKET_NEWPAYLOAD: (state, payloadObject) => {
       console.log('[vuex:SOCKET_NEWPAYLOAD] mutation fired')
       state.list.push(payloadObject.Result)
+    },
+    SOCKET_DEVPAYLOADCREATED: (state, payloadObject) => {
+      console.log('[vuex:SOCKET_PAYLOADUPDATED] got: ' + payloadObject.Payload.Id)
+      state.devPayloadKey = payloadObject.StagingKey
+      state.devPayloadJitter = payloadObject.Jitter
+      state.devPayloadBeaconInterval = payloadObject.BeaconInterval
+      state.devPayloadExpirationDate = payloadObject.ExpirationDate
+      state.isDevPayloadModalActive = true
     },
     SOCKET_PAYLOADUPDATED: (state, payloadObject) => {
       console.log('[vuex:SOCKET_PAYLOADUPDATED] got: ' + payloadObject.Payload.Id)
@@ -383,6 +396,18 @@ const payloads = {
       } else {
         console.log('[vuex:SOCKET_PAYLOADUPDATED] Could not find payload')
       }
+    },
+    clearNewDevPayloadValues: (state) => {
+      state.devPayloadKey = null
+      state.devPayloadJitter = null
+      state.devPayloadBeaconInterval = null
+      state.devPayloadExpirationDate = null
+      state.isDevPayloadModalActive = false
+    }
+  },
+  actions: {
+    clearNewDevPayloadValues: (context) => {
+      context.commit('clearNewDevPayloadValues')
     }
   }
 }

@@ -234,12 +234,33 @@
             </footer>
           </div>
       </b-modal>
+      <b-modal :active.sync="isDevPayloadModalActive" scroll="keep">
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Development Payload Created</p>
+          </header>
+          <section class="modal-card-body">
+            <p>Make a note of this information as there's no easy way to get it back once you close this window.</p>
+            <pre class="is-paddingless">
+{
+  "StagingKey": {{this.devPayloadKey}},
+  "BeaconInterval": {{this.devPayloadBeaconInterval}},
+  "Jitter": {{this.devPayloadJitter}},
+  "ExpirationDate": {{this.devPayloadExpirationDate}}
+}
+            </pre>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-primary" @click="clearNewDevPayloadValues">Dismiss</button>
+          </footer>
+        </div>
+      </b-modal>
     </div>
   </section>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -273,7 +294,12 @@ export default {
       payloads: state => state.payloads.list,
       userId: state => state.faction.userId,
       accessKeyId: state => state.faction.accessKeyId,
-      accessSecret: state => state.faction.accessSecret
+      accessSecret: state => state.faction.accessSecret,
+      isDevPayloadModalActive: state => state.payloads.isDevPayloadModalActive(),
+      devPayloadKey: state => state.payloads.devPayloadKey,
+      devPayloadJitter: state => state.payloads.devPayloadJitter,
+      devPayloadBeaconInterval: state => state.payloads.devPayloadBeaconInterval,
+      devPayloadExpirationDate: state => state.payloads.devPayloadExpirationDate
     }),
     payloadsList () {
       if (this.showHidden) {
@@ -298,6 +324,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'clearNewDevPayloadValues'
+    ]),
     getPayloads () {
       this.loading = true
       console.log('[Payloads.vue] sending getPayloads')
@@ -420,6 +449,11 @@ export default {
         this.newPayloadConfiguration = this.newPayloadAgentType.Configurations[0]
         this.newPayloadBeaconInterval = 5
         this.newPayloadJitter = 0
+      }
+    },
+    devPayload () {
+      if (this.devPayload != null) {
+        this.isDevPayloadModalActive = true
       }
     }
   },
