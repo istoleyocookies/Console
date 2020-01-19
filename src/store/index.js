@@ -368,12 +368,12 @@ const payloads = {
       console.log('[vuex:SOCKET_GETPAYLOAD] mutation fired')
       state.list = payloadObjects.Results
     },
-    SOCKET_NEWPAYLOAD: (state, payloadObject) => {
+    SOCKET_PAYLOADCREATED: (state, payloadObject) => {
       console.log('[vuex:SOCKET_NEWPAYLOAD] mutation fired')
-      state.list.push(payloadObject.Result)
+      state.list.push(payloadObject.Payload)
     },
     SOCKET_DEVPAYLOADCREATED: (state, payloadObject) => {
-      console.log('[vuex:SOCKET_PAYLOADUPDATED] got: ' + payloadObject.Payload.Id)
+      console.log('[vuex:SOCKET_DEVPAYLOADCREATED] got: ' + payloadObject)
       state.devPayloadKey = payloadObject.StagingKey
       state.devPayloadJitter = payloadObject.Jitter
       state.devPayloadBeaconInterval = payloadObject.BeaconInterval
@@ -382,6 +382,7 @@ const payloads = {
     },
     SOCKET_PAYLOADUPDATED: (state, payloadObject) => {
       console.log('[vuex:SOCKET_PAYLOADUPDATED] got: ' + payloadObject.Payload.Id)
+      console.log(payloadObject)
       let payload = state.list.find(payload => payload.Id === payloadObject.Payload.Id)
       if (payload) {
         console.log('[vuex:SOCKET_PAYLOADUPDATED] Updating payload ' + payload.Id)
