@@ -234,12 +234,33 @@
             </footer>
           </div>
       </b-modal>
+      <b-modal :active.sync="isDevPayloadModalActive" scroll="keep">
+        <div class="modal-card" style="width: auto">
+          <header class="modal-card-head">
+            <p class="modal-card-title">Development Payload Created</p>
+          </header>
+          <section class="modal-card-body">
+            <p>Make a note of this information as there's no easy way to get it back once you close this window.</p>
+            <pre class="is-paddingless">
+{
+  "StagingKey": {{this.devPayloadKey}},
+  "BeaconInterval": {{this.devPayloadBeaconInterval}},
+  "Jitter": {{this.devPayloadJitter}},
+  "ExpirationDate": {{this.devPayloadExpirationDate}}
+}
+            </pre>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-primary" @click="clearNewDevPayloadValues">Dismiss</button>
+          </footer>
+        </div>
+      </b-modal>
     </div>
   </section>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import axios from 'axios'
 import moment from 'moment'
 
@@ -273,7 +294,12 @@ export default {
       payloads: state => state.payloads.list,
       userId: state => state.faction.userId,
       accessKeyId: state => state.faction.accessKeyId,
-      accessSecret: state => state.faction.accessSecret
+      accessSecret: state => state.faction.accessSecret,
+      isDevPayloadModalActive: state => state.payloads.isDevPayloadModalActive,
+      devPayloadKey: state => state.payloads.devPayloadKey,
+      devPayloadJitter: state => state.payloads.devPayloadJitter,
+      devPayloadBeaconInterval: state => state.payloads.devPayloadBeaconInterval,
+      devPayloadExpirationDate: state => state.payloads.devPayloadExpirationDate
     }),
     payloadsList () {
       if (this.showHidden) {
@@ -298,6 +324,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'clearNewDevPayloadValues'
+    ]),
     getPayloads () {
       this.loading = true
       console.log('[Payloads.vue] sending getPayloads')
@@ -318,21 +347,54 @@ export default {
     createPayload () {
       this.processing = true
 
-      var expirationDate = null
+      let expirationDate = null
       if (this.utcExpirationDate != null) {
         expirationDate = this.utcExpirationDate
       }
+
+      let newPayloadFormatId = 0
+      if (this.newPayloadFormat) {
+        newPayloadFormatId = this.newPayloadFormat.Id
+      }
+
+      let newPayloadTransportId = 0
+      let newPayloadAgentTransportId = 0
+      if (this.newPayloadTransport) {
+        newPayloadTransportId = this.newPayloadTransport.Id
+        newPayloadAgentTransportId = this.newPayloadTransport.AgentTransportId
+      }
+
+      let newPayloadOperatingSystemId = 0
+      if (this.newPayloadOperatingSystem) {
+        newPayloadOperatingSystemId = this.newPayloadOperatingSystem.Id
+      }
+
+      let newPayloadArchitectureId = 0
+      if (this.newPayloadArchitecture) {
+        newPayloadArchitectureId = this.newPayloadArchitecture.Id
+      }
+
+      let newPayloadVersionId = 0
+      if (this.newPayloadVersion) {
+        newPayloadVersionId = this.newPayloadVersion.Id
+      }
+
+      let newPayloadConfigurationId = 0
+      if (this.newPayloadConfiguration) {
+        newPayloadConfigurationId = this.newPayloadConfiguration.Id
+      }
+
       this.$socket.client.emit('newPayload',
         {
           'Description': this.newPayloadDescription,
           'AgentType': this.newPayloadAgentType.Id,
-          'FormatId': this.newPayloadFormat.Id,
-          'TransportId': this.newPayloadTransport.Id,
-          'AgentTransportId': this.newPayloadTransport.AgentTransportId,
-          'OperatingSystemId': this.newPayloadOperatingSystem.Id,
-          'ArchitectureId': this.newPayloadArchitecture.Id,
-          'VersionId': this.newPayloadVersion.Id,
-          'AgentTypeConfigurationId': this.newPayloadConfiguration.Id,
+          'FormatId': newPayloadFormatId,
+          'TransportId': newPayloadTransportId,
+          'AgentTransportId': newPayloadAgentTransportId,
+          'OperatingSystemId': newPayloadOperatingSystemId,
+          'ArchitectureId': newPayloadArchitectureId,
+          'VersionId': newPayloadVersionId,
+          'AgentTypeConfigurationId': newPayloadConfigurationId,
           'BeaconInterval': parseInt(this.newPayloadBeaconInterval),
           'Jitter': parseFloat(this.newPayloadJitter),
           'ExpirationDate': expirationDate,
