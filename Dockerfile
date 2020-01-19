@@ -1,15 +1,14 @@
 FROM node:alpine
 
 RUN apk add --no-cache \
-            nginx \
-            git \
-            bash \
-            openssl && \
+    nginx \
+    git \
+    bash \
+    openssl && \
     adduser -D -g 'www' www && \
     rm -rf /var/www/* && \
     chown -R www:www /var/lib/nginx && \
-    chown -R www:www /var/www && \
-    chown -R www:www /var/tmp/nginx/
+    chown -R www:www /var/www
 
 
 # Create app directory
