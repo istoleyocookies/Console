@@ -1,0 +1,74 @@
+mutation createPayload(
+    $agentTypeId:Int!,
+    $description: String,
+    $formatId:Int!,
+    $operatingSystemId:Int!,
+    $architectureId:Int!,
+    $transportId:Int!,
+    $versionId:Int!,
+    $configurationId:Int!,
+    $beaconInterval:Int!,
+    $jitter:float8!,
+    $expirationDate:timestamp,
+    $debug:Boolean!)
+{
+    insert_Payload(objects: {
+        AgentTypeId: $agentTypeId,
+        Description:$description,
+        AgentTypeFormatId:$formatId,
+        AgentTypeOperatingSystemId:$operatingSystemId,
+        AgentTypeArchitectureId:$architectureId,
+        TransportId:$transportId,
+        AgentTypeVersionId:$versionId,
+        AgentTypeConfigurationId:$configurationId,
+        BeaconInterval:$beaconInterval,
+        Jitter:$jitter,
+        ExpirationDate:$expirationDate,
+        Debug:$debug
+    }) {
+    returning {
+            Id
+            Name
+            Description
+            Key
+            AgentType {
+                Id
+                Name
+                Development
+            }
+            Configuration: AgentTypeConfiguration {
+                Id
+                Name
+            }
+            Architecture: AgentTypeArchitecture {
+                Id
+                Name
+            }
+            OperatingSystem: AgentTypeOperatingSystem {
+                Id
+                Name
+            }
+            Format: AgentTypeFormat {
+                Id
+                Name
+            }
+            AgentTransport: AgentTransportType {
+                Id
+                Name
+            }
+            Transport {
+                Id
+                Name
+                TransportType
+            }
+            Created
+            Built
+            LastDownloaded
+            BeaconInterval
+            Jitter
+            ExpirationDate
+            Enabled
+            Visible
+        }
+    }
+}

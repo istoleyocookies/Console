@@ -1,14 +1,14 @@
 <template>
   <section class="message">
     <div  v-if="type === 'AgentTask'">
-      <p>[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]</p>
+      <p>{{ taskId }}[{{ moment.utc(received).local().format('LTS').toString() }}] [{{ username }}]</p>
       <p class="message-text">F2> {{ display }}</p>
     </div>
     <div v-else>
       <p v-if="type === 'HelpResponse' || type === 'ShowMessage'"
-        class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}]
+        class="response-details">[{{ moment.utc(received).local().format('LTS').toString() }}] [{{ username }}]
       </p>
-      <p v-else class="response-details">[{{ moment.utc(recieved).local().format('LTS').toString() }}] [{{ username }}] [#{{ taskId }}]</p>
+      <p v-else class="response-details">{{ taskId }}[{{ moment.utc(received).local().format('LTS').toString() }}] [{{ username }}]</p>
       <b-table
         v-if="tableData"
         :data="tableData"
@@ -25,29 +25,43 @@
 <script>
 export default {
   props: [
-    'display',
-    'username',
-    'recieved',
-    'type',
-    'taskId'
+    'message'
   ],
   data () {
     return {
+      received: this.message.Received,
+      display: this.message.Display,
+      type: this.message.Type,
       isJson: false,
       columnNames: [],
       tableData: null
+    }
+  },
+  computed: {
+    username () {
+      if (this.message.User) {
+        return this.message.User.Username
+      } else if (this.message.Agent) {
+        return this.message.Agent.Name
+      } else {
+        return ''
+      }
+    },
+    taskId () {
+      if (this.message.AgentTaskId) {
+        return '[#' + this.message.AgentTaskId + '] '
+      } else {
+        return ''
+      }
     }
   },
   methods: {
     checkJson () {
       try {
         var jsonContent = JSON.parse(this.display)
-        console.log('[ConsoleMessage.vue] Content is json')
-        console.log(jsonContent[0])
+        // console.log('[ConsoleMessage.vue] Content is json')
         var keys = Object.keys(jsonContent[0])
-        console.log(keys)
         for (var key in keys) {
-          console.log(keys[key])
           this.columnNames.push({
             field: keys[key],
             label: keys[key],
@@ -57,13 +71,12 @@ export default {
         this.tableData = jsonContent
         this.isJson = true
       } catch (err) {
-        console.log('[ConsoleMessage.vue] Content is not json')
+        // console.log('[ConsoleMessage.vue] Content is not json')
         this.isJson = false
       }
     }
   },
   created () {
-    console.log('[ConsoleMessage.vue] checking if content is json')
     this.checkJson()
   }
 }

@@ -31,7 +31,6 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'consoleAutoComplete',
@@ -39,10 +38,6 @@ export default {
     'input'
   ],
   computed: {
-    ...mapState({
-      agent: state => state.agents.currentAgent,
-      commandsList: state => state.agents.commandsList
-    }),
     commandText () {
       if (this.input) {
         return this.input.split(' ')[0]
@@ -67,9 +62,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'clearCommands'
-    ]),
     findCommands (query) {
       return this.commandsList.filter(function (command) {
         if (String(command['Name']).toLowerCase().startsWith(query.toLowerCase())) {

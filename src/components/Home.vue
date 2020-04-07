@@ -40,7 +40,7 @@
         </b-table-column>
 
         <b-table-column field='PID' label='PID' numeric sortable>
-            {{ props.row.Pid }}
+            {{ props.row.PID }}
         </b-table-column>
 
         <b-table-column field='TransportName' label='Transport Name' numeric sortable>
@@ -66,19 +66,18 @@ export default {
   name: 'home',
   data () {
     return {
+      agents: [],
       isPaginated: true,
       isPaginationSimple: false,
       currentPage: 1,
       perPage: 10,
       loading: false,
       selected: null,
-      query: null
+      query: null,
+      error: null
     }
   },
   computed: {
-    agents () {
-      return this.$store.state.agents.list
-    },
     agentsList () {
       if (this.showHidden) {
         return this.agents
@@ -99,12 +98,12 @@ export default {
     }
   },
   methods: {
-    getAgents () {
-      this.loading = true
-      console.log('[Home.vue] sending getAgent')
-      this.$socket.client.emit('getAgent', { AgentId: 'all' })
-      this.loading = false
-    },
+    // getAgents () {
+    //   this.loading = true
+    //   console.log('[Home.vue] sending getAgent')
+    //   this.$socket.client.emit('getAgent', { AgentId: 'all' })
+    //   this.loading = false
+    // },
     findAgents (query) {
       return this.agentsList.filter(function (agent) {
         for (var property in agent) {
@@ -129,18 +128,31 @@ export default {
     onSort (field, order) {
       this.sortField = field
       this.sortOrder = order
-      this.getAgents()
+      // this.getAgents()
     },
     initSort () {
       this.$refs.table.initSort()
       console.log('[Home:initSort] - Table sorted.')
     }
   },
-  beforeMount () {
-    this.getAgents()
-  },
+  // beforeMount () {
+  //   this.getAgents()
+  // },
   mounted () {
     setTimeout(this.initSort(), 1)
+  },
+  apollo: {
+    $subscribe: {
+      agents: {
+        query: require('../graphql/agents/subscription-allAgents.graphql'),
+        result (data) {
+          this.agents = data.data.agents
+        },
+        error (error) {
+          this.error = JSON.stringify(error.message)
+        }
+      }
+    }
   }
 }
 </script>

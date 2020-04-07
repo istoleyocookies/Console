@@ -113,7 +113,7 @@
               <b-field label="Agent Type">
                   <b-select placeholder="Select an Agent Type" v-model="newPayloadAgentType">
                     <option
-                      v-for="agentType in availableAgentTypes"
+                      v-for="agentType in agentTypes"
                       :value="agentType"
                       :key="agentType.Id">
                       {{ agentType.Name }}
@@ -180,13 +180,22 @@
                 </div>
                 <div class="column">
                   <b-field label="Agent Transport">
-                    <b-select placeholder="Select an Agent Transport Type" v-model="newPayloadTransport">
-                      <option
-                        v-for="transport in newPayloadAgentType.AvailableTransports"
-                        :value="transport"
-                        :key="transport.Id">
-                        {{ transport.Name }}
-                      </option>
+                    <b-select placeholder="Select an Agent Transport Type"
+                          v-model="newPayloadTransport">
+                      <optgroup
+                        v-for="agentTransport in newPayloadAgentType.AgentTransports"
+                        :value="agentTransport"
+                        :key="agentTransport.Id"
+                        :label="agentTransport.Name"
+
+                      >
+                        <option
+                          v-for="transport in agentTransport.Available"
+                          :value="transport"
+                          :key="transport.Id">
+                          {{ transport.Name }}
+                        </option>
+                      </optgroup>
                     </b-select>
                   </b-field>
 
@@ -250,9 +259,9 @@
 }
             </pre>
           </section>
-          <footer class="modal-card-foot">
-            <button class="button is-primary" @click="clearNewDevPayloadValues">Dismiss</button>
-          </footer>
+<!--          <footer class="modal-card-foot">-->
+<!--            <button class="button is-primary" @click="clearNewDevPayloadValues">Dismiss</button>-->
+<!--          </footer>-->
         </div>
       </b-modal>
     </div>
@@ -260,19 +269,23 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import axios from 'axios'
+import { mapState } from 'vuex'
 import moment from 'moment'
 
 export default {
+  name: 'payloads',
   data () {
     return {
-      error: false,
-      message: null,
-      processing: false,
       apiEndpoint: process.env.VUE_APP_API_ENDPOINT,
+      payloads: [],
+      isDevPayloadModalActive: null,
+      devPayloadKey: null,
+      devPayloadJitter: null,
+      devPayloadBeaconInterval: null,
+      devPayloadExpirationDate: null,
       isNewPayloadModalActive: false,
       availableAgentTypes: [],
+      newPayloadAgentTransport: null,
       newPayloadAgentType: null,
       newPayloadArchitecture: null,
       newPayloadConfiguration: null,
@@ -286,20 +299,23 @@ export default {
       newPayloadExpirationDate: null,
       newPayloadDebug: false,
       isHelpActive: false,
-      query: null
+      query: null,
+      error: false,
+      message: null,
+      processing: false
     }
   },
   computed: {
     ...mapState({
-      payloads: state => state.payloads.list,
+      // payloads: state => state.payloads.list,
       userId: state => state.faction.userId,
       accessKeyId: state => state.faction.accessKeyId,
-      accessSecret: state => state.faction.accessSecret,
-      isDevPayloadModalActive: state => state.payloads.isDevPayloadModalActive,
-      devPayloadKey: state => state.payloads.devPayloadKey,
-      devPayloadJitter: state => state.payloads.devPayloadJitter,
-      devPayloadBeaconInterval: state => state.payloads.devPayloadBeaconInterval,
-      devPayloadExpirationDate: state => state.payloads.devPayloadExpirationDate
+      accessSecret: state => state.faction.accessSecret
+      // isDevPayloadModalActive: state => state.payloads.isDevPayloadModalActive,
+      // devPayloadKey: state => state.payloads.devPayloadKey,
+      // devPayloadJitter: state => state.payloads.devPayloadJitter,
+      // devPayloadBeaconInterval: state => state.payloads.devPayloadBeaconInterval,
+      // devPayloadExpirationDate: state => state.payloads.devPayloadExpirationDate
     }),
     payloadsList () {
       if (this.showHidden) {
@@ -324,18 +340,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      'clearNewDevPayloadValues'
-    ]),
-    getPayloads () {
-      this.loading = true
-      console.log('[Payloads.vue] sending getPayloads')
-      this.$socket.client.emit('getPayload', { PayloadId: 'all' })
-      this.loading = false
-    },
+    // ...mapActions([
+    //   'clearNewDevPayloadValues'
+    // ]),
+    // getPayloads () {
+    //   this.loading = true
+    //   console.log('[Payloads.vue] sending getPayloads')
+    //   this.$socket.client.emit('getPayload', { PayloadId: 'all' })
+    //   this.loading = false
+    // },
     findPayloads (query) {
       return this.payloadsList.filter(function (payload) {
-        for (var property in payload) {
+        for (const property in payload) {
           if (!['Created', 'Key', 'Name', 'LastDownload'].includes(property)) {
             if (String(payload[property]).toLowerCase().includes(query.toLowerCase())) {
               return payload
@@ -346,7 +362,6 @@ export default {
     },
     createPayload () {
       this.processing = true
-
       let expirationDate = null
       if (this.utcExpirationDate != null) {
         expirationDate = this.utcExpirationDate
@@ -358,10 +373,8 @@ export default {
       }
 
       let newPayloadTransportId = 0
-      let newPayloadAgentTransportId = 0
       if (this.newPayloadTransport) {
         newPayloadTransportId = this.newPayloadTransport.Id
-        newPayloadAgentTransportId = this.newPayloadTransport.AgentTransportId
       }
 
       let newPayloadOperatingSystemId = 0
@@ -384,22 +397,26 @@ export default {
         newPayloadConfigurationId = this.newPayloadConfiguration.Id
       }
 
-      this.$socket.client.emit('newPayload',
-        {
-          'Description': this.newPayloadDescription,
-          'AgentType': this.newPayloadAgentType.Id,
-          'FormatId': newPayloadFormatId,
-          'TransportId': newPayloadTransportId,
-          'AgentTransportId': newPayloadAgentTransportId,
-          'OperatingSystemId': newPayloadOperatingSystemId,
-          'ArchitectureId': newPayloadArchitectureId,
-          'VersionId': newPayloadVersionId,
-          'AgentTypeConfigurationId': newPayloadConfigurationId,
-          'BeaconInterval': parseInt(this.newPayloadBeaconInterval),
-          'Jitter': parseFloat(this.newPayloadJitter),
-          'ExpirationDate': expirationDate,
-          'Debug': this.newPayloadDebug
-        })
+      this.$apollo.mutate({
+        mutation: require('../graphql/payload-mutation-create.graphql'),
+        variables: {
+          'description': this.newPayloadDescription,
+          'agentTypeId': this.newPayloadAgentType.Id,
+          'formatId': newPayloadFormatId,
+          'transportId': newPayloadTransportId,
+          'operatingSystemId': newPayloadOperatingSystemId,
+          'architectureId': newPayloadArchitectureId,
+          'versionId': newPayloadVersionId,
+          'configurationId': newPayloadConfigurationId,
+          'beaconInterval': parseInt(this.newPayloadBeaconInterval),
+          'jitter': parseFloat(this.newPayloadJitter),
+          'expirationDate': expirationDate,
+          'debug': this.newPayloadDebug
+        },
+        update: (cache, { data: { insert_payload } }) => {
+          console.log(insert_payload)
+        }
+      })
       this.proccessing = false
       this.closeNewPayloadWindow()
     },
@@ -414,25 +431,24 @@ export default {
           })
       }
     },
-    hidePayload (id) {
-      console.log('[Payloads.vue] hidePayload firing with payload id: ' + id)
-      this.$socket.client.emit('hidePayload', { PayloadId: id })
-    },
-    getAgentTypes () {
-      axios.defaults.withCredentials = true
-      axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
-      ).then(function (response) {
-        if (!response.data.Success) {
-          this.error = true
-          this.message = response.data.Message
-        } else {
-          this.availableAgentTypes = response.data.Results
-        }
-        this.proccessing = false
-      }.bind(this))
-    },
+    // hidePayload (id) {
+    //   console.log('[Payloads.vue] hidePayload firing with payload id: ' + id)
+    //   this.$socket.client.emit('hidePayload', { PayloadId: id })
+    // },
+    // getAgentTypes () {
+    //   axios.defaults.withCredentials = true
+    //   axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
+    //   ).then(function (response) {
+    //     if (!response.data.Success) {
+    //       this.error = true
+    //       this.message = response.data.Message
+    //     } else {
+    //       this.availableAgentTypes = response.data.Results
+    //     }
+    //     this.proccessing = false
+    //   }.bind(this))
+    // },
     openNewPayloadModal () {
-      this.getAgentTypes()
       this.isNewPayloadModalActive = true
     },
     clearNewPayloadValues () {
@@ -473,9 +489,10 @@ export default {
       this.error = false
     },
     newPayloadAgentType () {
+      console.log('NewPayloadAgentType Changed')
       if (this.newPayloadAgentType != null) {
         this.newPayloadFormat = this.newPayloadAgentType.Formats[0]
-        this.newPayloadTransport = this.newPayloadAgentType.AvailableTransports[0]
+        this.newPayloadTransport = this.newPayloadAgentType.AgentTransports[0].Available[0]
         this.newPayloadOperatingSystem = this.newPayloadAgentType.OperatingSystems[0]
         this.newPayloadArchitecture = this.newPayloadAgentType.Architectures[0]
         this.newPayloadVersion = this.newPayloadAgentType.Versions[0]
@@ -485,8 +502,21 @@ export default {
       }
     }
   },
-  beforeMount () {
-    this.getPayloads()
+  apollo: {
+    agentTypes: {
+      query: require('../graphql/agentType-query-all.graphql')
+    },
+    $subscribe: {
+      payloads: {
+        query: require('../graphql/payloads/subscription-allPayloads.graphql'),
+        result (data) {
+          this.payloads = data.data.payloads
+        },
+        error (error) {
+          this.error = JSON.stringify(error.message)
+        }
+      }
+    }
   }
 }
 </script>

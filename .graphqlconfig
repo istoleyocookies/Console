@@ -1,0 +1,15 @@
+{
+  "name": "Faction GraphQL Schema",
+  "schemaPath": "/opt/faction/global/schema.graphql",
+  "extensions": {
+    "endpoints": {
+      "Default GraphQL Endpoint": {
+        "url": "http://localhost:8088/v1/graphql",
+        "headers": {
+          "user-agent": "JS GraphQL"
+        },
+        "introspect": false
+      }
+    }
+  }
+}

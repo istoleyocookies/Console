@@ -4,12 +4,7 @@
       v-for="(message, index) in messages"
       :message="message"
       :index="index"
-      :key="message.Issued"
-      :display="message.Display"
-      :username="message.Username"
-      :recieved="message.Received"
-      :type="message.Type"
-      :taskId="message.AgentTaskId"
+      :key="message.Received"
     ></app-console-message>
   </section>
 </template>

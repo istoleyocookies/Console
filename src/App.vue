@@ -33,67 +33,67 @@ export default {
       token: state => state.faction.token,
       connected: state => state.faction.connected,
       connectionStatus: state => state.faction.connectionStatus,
-      connectionStatusMessage: state => state.faction.connectionStatusMessage,
-      newErrorMessage: state => state.errorMessages.newErrorMessage,
-      agentNotificationType: state => state.agents.notificationType,
-      agentNotification: state => state.agents.agentNotification,
-      transportNotification: state => state.transports.transportNotification,
-      payloadNotification: state => state.payloads.payloadNotification
+      connectionStatusMessage: state => state.faction.connectionStatusMessage
+      // newErrorMessage: state => state.errorMessages.newErrorMessage,
+      // agentNotificationType: state => state.agents.notificationType,
+      // agentNotification: state => state.agents.agentNotification,
+      // transportNotification: state => state.transports.transportNotification,
+      // payloadNotification: state => state.payloads.payloadNotification
     })
   },
   watch: {
-    connected () {
-      if (this.connected) {
-        this.connectionError = false
-        console.log('[App.vue] Connected. Getting Agents.')
-        this.$socket.client.emit('getAgent', { AgentId: 'all' })
-        this.$buefy.toast.open({
-          message: 'Connected to Faction!',
-          type: 'is-success',
-          queue: false
-        })
-      } else if (!this.connected) {
-        this.connectionError = true
-      }
-    },
-    agentNotification () {
-      var actiontext = null
-      if (this.agentNotificationType === 'connected') {
-        actiontext = 'GO'
-      }
-      this.$buefy.snackbar.open({
-        duration: 5000,
-        message: 'Agent ' + this.agentNotificationType + ': ' + this.agentNotification.Name,
-        actionText: actiontext,
-        queue: false,
-        onAction: () => {
-          this.$router.push({ name: 'console', params: { AgentId: this.agentNotification.Id } })
-        }
-      })
-    },
-    payloadNotification () {
-      this.$buefy.snackbar.open({
-        duration: 5000,
-        message: 'Payload updated: ' + this.payloadNotification.Name,
-        actionText: 'GO',
-        queue: false,
-        onAction: () => {
-          this.$router.push({ name: 'payloads' })
-        }
-      })
-    },
-    newErrorMessage () {
-      this.$buefy.snackbar.open({
-        duration: 10000,
-        message: 'ERROR: ' + this.newErrorMessage.Message,
-        actionText: 'GO',
-        queue: false,
-        type: 'is-danger',
-        onAction: () => {
-          this.$router.push({ name: 'errorMessage', params: { ErrorMessageId: this.newErrorMessage.Id } })
-        }
-      })
-    }
+  //   connected () {
+  //     if (this.connected) {
+  //       this.connectionError = false
+  //       console.log('[App.vue] Connected. Getting Agents.')
+  //       this.$socket.client.emit('getAgent', { AgentId: 'all' })
+  //       this.$buefy.toast.open({
+  //         message: 'Connected to Faction!',
+  //         type: 'is-success',
+  //         queue: false
+  //       })
+  //     } else if (!this.connected) {
+  //       this.connectionError = true
+  //     }
+  //   },
+  //   agentNotification () {
+  //     var actiontext = null
+  //     if (this.agentNotificationType === 'connected') {
+  //       actiontext = 'GO'
+  //     }
+  //     this.$buefy.snackbar.open({
+  //       duration: 5000,
+  //       message: 'Agent ' + this.agentNotificationType + ': ' + this.agentNotification.Name,
+  //       actionText: actiontext,
+  //       queue: false,
+  //       onAction: () => {
+  //         this.$router.push({ name: 'console', params: { AgentId: this.agentNotification.Id } })
+  //       }
+  //     })
+  //   },
+  //   payloadNotification () {
+  //     this.$buefy.snackbar.open({
+  //       duration: 5000,
+  //       message: 'Payload updated: ' + this.payloadNotification.Name,
+  //       actionText: 'GO',
+  //       queue: false,
+  //       onAction: () => {
+  //         this.$router.push({ name: 'payloads' })
+  //       }
+  //     })
+  //   },
+  //   newErrorMessage () {
+  //     this.$buefy.snackbar.open({
+  //       duration: 10000,
+  //       message: 'ERROR: ' + this.newErrorMessage.Message,
+  //       actionText: 'GO',
+  //       queue: false,
+  //       type: 'is-danger',
+  //       onAction: () => {
+  //         this.$router.push({ name: 'errorMessage', params: { ErrorMessageId: this.newErrorMessage.Id } })
+  //       }
+  //     })
+  //   }
   }
 }
 </script>

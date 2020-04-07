@@ -1,0 +1,26 @@
+subscription allAgents {
+    agents: Agent {
+        Admin
+        BeaconInterval
+        ExternalIP
+        Id
+        Hostname
+        InitialCheckin
+        InternalIP
+        Jitter
+        LastCheckin
+        Name
+        OperatingSystem
+        PID
+        Username
+        Visible
+        AgentType {
+            Name
+            Id
+        }
+        Transport {
+            Id
+            Name
+        }
+    }
+}

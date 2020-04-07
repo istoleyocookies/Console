@@ -3,24 +3,76 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import VueSocketio from 'vue-socket.io-extended'
-import $socket from './socket-io-client'
+import store from './store/index'
+
 import Buefy from 'buefy'
-import VueCookies from 'vue-cookies'
+
+import VueApollo from 'vue-apollo'
+import ApolloClient from 'apollo-client'
+import { WebSocketLink } from 'apollo-link-ws'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import 'source-code-pro/source-code-pro.css'
 
-import store from './store/index'
-
-var moment = require('moment')
+const moment = require('moment')
 moment.relativeTimeThreshold('ss', 3)
 
 Vue.config.productionTip = false
 Vue.prototype.moment = moment
-Vue.use(store)
-Vue.use(VueSocketio, $socket, { store })
-Vue.use(Buefy)
-Vue.use(VueCookies)
+
+const getHeaders = () => {
+  console.log('[main:getHeaders] running..')
+  const headers = {}
+  const token = window.localStorage.getItem('apollo-token')
+
+  if (token) {
+    headers.authorization = `Bearer ${token}`
+  }
+  return headers
+}
+
+// const httpLink = new HttpLink({
+//   // You should use an absolute URL here
+//   uri: 'http://localhost:8088/v1/graphql',
+//   fetch,
+//   headers: getHeaders()
+// })
+
+const wsLink = new WebSocketLink({
+  uri: 'ws://localhost:8088/v1/graphql',
+  options: {
+    reconnect: true,
+    timeout: 30000,
+    connectionParams: () => {
+      return { headers: getHeaders() }
+    }
+  }
+})
+//
+// const link = split(
+//   ({ query }) => {
+//     const { kind, operation } = getMainDefinition(query)
+//     return kind === 'OperationDefinition' && operation === 'subscription'
+//   },
+//   wsLink,
+//   httpLink
+// )
+
+const apolloClient = new ApolloClient({
+  link: wsLink,
+  cache: new InMemoryCache({
+    addTypename: true
+  }),
+  connectToDevTools: true
+})
+
+// Install the vue plugin
+const apolloProvider = new VueApollo({
+  defaultClient: apolloClient,
+  defaultOptions: {
+    $loadingKey: 'loading'
+  }
+})
 
 Vue.filter('truncate', function (value, length) {
   return value.length > length
@@ -40,10 +92,14 @@ Vue.filter('formatDateTimeAgo', function (date) {
   return moment.utc(date).local().fromNow()
 })
 
+Vue.use(Buefy)
+Vue.use(VueApollo)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  apolloProvider,
   components: { App },
   template: '<App/>',
   store

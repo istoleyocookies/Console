@@ -1,0 +1,36 @@
+query allAgentTypes {
+    agent_types {
+        id
+        name
+        development
+        agent_transport_types {
+            id
+            name
+            transporttype_guid
+            transports {
+                id
+                name
+            }
+        }
+        agent_type_architectures {
+            id
+            name
+        }
+        agent_type_configurations {
+            id
+            name
+        }
+        agent_type_formats {
+            id
+            name
+        }
+        agent_type_operating_systems {
+            id
+            name
+        }
+        agent_type_versions {
+            id
+            name
+        }
+    }
+}

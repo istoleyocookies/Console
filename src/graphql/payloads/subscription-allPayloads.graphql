@@ -1,0 +1,46 @@
+subscription allPayloads {
+    payloads: Payload {
+        Id
+        Name
+        Description
+        Key
+        AgentType {
+            Id
+            Name
+            Development
+        }
+        Configuration: AgentTypeConfiguration {
+            Id
+            Name
+        }
+        Architecture: AgentTypeArchitecture {
+            Id
+            Name
+        }
+        OperatingSystem: AgentTypeOperatingSystem {
+            Id
+            Name
+        }
+        Format: AgentTypeFormat {
+            Id
+            Name
+        }
+        AgentTransport: AgentTransportType {
+            Id
+            Name
+        }
+        Transport {
+            Id
+            Name
+            TransportType
+        }
+        Created
+        Built
+        LastDownloaded
+        BeaconInterval
+        Jitter
+        ExpirationDate
+        Enabled
+        Visible
+    }
+}
