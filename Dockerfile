@@ -1,6 +1,6 @@
 FROM node:alpine
 RUN apk add --no-cache \
-    git 
+    git
 
 # Create app directory
 WORKDIR /app
@@ -12,7 +12,6 @@ COPY . .
 RUN npm install && npm run build
 
 FROM nginx:1.19-alpine
-COPY ./docker_build/nginx.conf /etc/nginx/nginx.conf
-COPY --from=0 /app/dist/* /usr/share/nginx/html/
+COPY --from=0 /app/dist/ /usr/share/nginx/html/
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

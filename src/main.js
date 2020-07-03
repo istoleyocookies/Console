@@ -39,7 +39,7 @@ const getHeaders = () => {
 // })
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:8088/v1/graphql',
+  uri: 'wss://' + location.host + '/api/v1/graphql',
   options: {
     reconnect: true,
     timeout: 30000,
