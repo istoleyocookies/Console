@@ -19,14 +19,11 @@ const faction = {
     loginUser: (state, data) => {
       console.log('[vuex:LoginUserMutation] Running with User Id: ' + data['userId'])
       console.log('[vuex:LoginUserMutation] Running with User Role: ' + data['userRole'])
-      console.log('[vuex:LoginUserMutation] Running with Key Id: ' + data['keyId'])
-      console.log('[vuex:LoginUserMutation] Running with Secret: ' + data['secret'])
-      if ((data['username'] && data['userId'] && data['keyId']) && (data['secret'])) {
+      console.log('[vuex:LoginUserMutation] Running with username ' + data['username'])
+      if ((data['username'] && data['userId'] && data['userRole'])) {
         state.username = data['username']
         state.userId = data['userId']
         state.userRole = data['userRole']
-        state.accessKeyId = data['keyId']
-        state.accessSecret = data['secret']
         state.loggedIn = true
       } else {
         console.log('[vuex:LoginUserMutation] Need both an Id and a Secret')

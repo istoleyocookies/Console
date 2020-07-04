@@ -15,9 +15,9 @@ import Payloads from '@/components/Payloads'
 import TaskView from '@/components/TaskView'
 import TaskList from '@/components/TaskList'
 import Transports from '@/components/Transports'
+import store from '../store/index'
 
 Vue.use(VueRouter)
-
 const router = new VueRouter({
   mode: process.env.ROUTER_MODE,
   routes: [
@@ -99,19 +99,19 @@ const router = new VueRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   console.log('[router] Trying to get to ' + to.path)
-//   console.log('[router] Authed: ' + store.state.faction.loggedIn)
-//   if (store.state.faction.loggedIn) {
-//     console.log('[router] User is logged in, sending them on their way.')
-//     next()
-//   } else if (to.name === 'login') {
-//     console.log('[router] User is trying to log in, sending them on their way.')
-//     next()
-//   } else if (!store.state.faction.loggedIn && to.name !== 'login') {
-//     next({ name: 'login', query: { next: to.fullPath } })
-//   }
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  console.log('[router] Trying to get to ' + to.path)
+  console.log('[router] Authed: ' + store.state.faction.loggedIn)
+  if (store.state.faction.loggedIn) {
+    console.log('[router] User is logged in, sending them on their way.')
+    next()
+  } else if (to.name === 'login') {
+    console.log('[router] User is trying to log in, sending them on their way.')
+    next()
+  } else if (!store.state.faction.loggedIn && to.name !== 'login') {
+    next({ name: 'login', query: { next: to.fullPath } })
+  }
+  next()
+})
 
 export default router

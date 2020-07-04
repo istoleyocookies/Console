@@ -71,23 +71,20 @@ export default {
       'clearLoginState'
     ]),
     updateApiCookie () {
-      this.username = this.$cookies.get('Username')
-      var userid = this.$cookies.get('UserId')
-      var userrole = this.$cookies.get('UserRole')
-      var keyid = this.$cookies.get('AccessKeyId')
-      var secret = this.$cookies.get('AccessSecret')
-      console.log('[Login.vue:updateApiCookie] UserId from cookie: ' + userid)
-      console.log('[Login.vue:updateApiCookie] UserRole from cookie: ' + userrole)
-      console.log('[Login.vue:updateApiCookie] KeyId from cookie: ' + keyid)
-      console.log('[Login.vue:updateApiCookie] Secret from cookie: ' + secret)
-      if (keyid != null && secret != null) {
+      this.username = this.$cookies.get('username')
+      const userId = this.$cookies.get('user_id')
+      const userRole = this.$cookies.get('user_role')
+      const accessKey = this.$cookies.get('access_key')
+      console.log('[Login.vue:updateApiCookie] UserId from cookie: ' + userId)
+      console.log('[Login.vue:updateApiCookie] UserRole from cookie: ' + userRole)
+      console.log('[Login.vue:updateApiCookie] ApiKey from cookie: ' + accessKey)
+      if (accessKey != null) {
         console.log('[Login.vue:updateApiCookie] Trying to login')
         this.loginUser({
           username: this.username,
-          userId: userid,
-          userRole: userrole,
-          keyId: keyid,
-          secret: secret
+          userId: userId,
+          userRole: userRole,
+          accessKey: accessKey
         })
       } else {
         this.loginRunning = false
@@ -96,24 +93,22 @@ export default {
     submitLogin () {
       this.loginRunning = true
       axios.defaults.withCredentials = true
-      axios.post((process.env.VUE_APP_API_ENDPOINT + '/login/'),
+      axios.post(('/api/v1/auth/login/'),
         {
           'Username': this.username,
           'Password': this.password
         }).then(function (response) {
-        if (response.data.Success) {
+        if (response.data.success) {
           console.log('[Login.vue:submitLogin] Trying to login..')
-          console.log('[Login.vue:submitLogin] UserId: ' + response.data.UserId)
-          console.log('[Login.vue:submitLogin] Username: ' + response.data.Username)
-          console.log('[Login.vue:submitLogin] UserRole: ' + response.data.UserRole)
-          console.log('[Login.vue:submitLogin] AccessKeyId: ' + response.data.AccessKeyId)
-          console.log('[Login.vue:submitLogin] AccessSecret: ' + response.data.AccessSecret)
+          console.log('[Login.vue:submitLogin] User Id: ' + response.data.user_id)
+          console.log('[Login.vue:submitLogin] Username: ' + response.data.username)
+          console.log('[Login.vue:submitLogin] User Role: ' + response.data.user_role)
+          console.log('[Login.vue:submitLogin] Access Key: ' + response.data.access_key)
           var loginSuccess = this.loginUser({
-            username: response.data.Username,
-            userId: response.data.UserId,
-            userRole: response.data.UserRole,
-            keyId: response.data.AccessKeyId,
-            secret: response.data.AccessSecret
+            username: response.data.username,
+            userId: response.data.user_id,
+            userRole: response.data.user_role,
+            accessKey: response.data.access_key
           })
           if (!loginSuccess) {
             this.error = true

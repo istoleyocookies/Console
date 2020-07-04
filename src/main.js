@@ -23,20 +23,13 @@ Vue.prototype.moment = moment
 const getHeaders = () => {
   console.log('[main:getHeaders] running..')
   const headers = {}
-  const token = window.localStorage.getItem('apollo-token')
+  const token = window.localStorage.getItem('faction-auth')
 
   if (token) {
-    headers.authorization = `Bearer ${token}`
+    headers.authorization = token
   }
   return headers
 }
-
-// const httpLink = new HttpLink({
-//   // You should use an absolute URL here
-//   uri: 'http://localhost:8088/v1/graphql',
-//   fetch,
-//   headers: getHeaders()
-// })
 
 const wsLink = new WebSocketLink({
   uri: 'wss://' + location.host + '/api/v1/graphql',
@@ -48,15 +41,6 @@ const wsLink = new WebSocketLink({
     }
   }
 })
-//
-// const link = split(
-//   ({ query }) => {
-//     const { kind, operation } = getMainDefinition(query)
-//     return kind === 'OperationDefinition' && operation === 'subscription'
-//   },
-//   wsLink,
-//   httpLink
-// )
 
 const apolloClient = new ApolloClient({
   link: wsLink,
