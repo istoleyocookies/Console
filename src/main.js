@@ -4,59 +4,16 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store/index'
-
 import Buefy from 'buefy'
-
-import VueApollo from 'vue-apollo'
-import ApolloClient from 'apollo-client'
-import { WebSocketLink } from 'apollo-link-ws'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-
 import 'source-code-pro/source-code-pro.css'
+import { createProvider } from './vue-apollo'
+import 'babel-polyfill'
 
 const moment = require('moment')
 moment.relativeTimeThreshold('ss', 3)
 
 Vue.config.productionTip = false
 Vue.prototype.moment = moment
-
-const getHeaders = () => {
-  console.log('[main:getHeaders] running..')
-  const headers = {}
-  const token = window.localStorage.getItem('faction-auth')
-
-  if (token) {
-    headers.authorization = token
-  }
-  return headers
-}
-
-const wsLink = new WebSocketLink({
-  uri: 'wss://' + location.host + '/api/v1/graphql',
-  options: {
-    reconnect: true,
-    timeout: 30000,
-    connectionParams: () => {
-      return { headers: getHeaders() }
-    }
-  }
-})
-
-const apolloClient = new ApolloClient({
-  link: wsLink,
-  cache: new InMemoryCache({
-    addTypename: true
-  }),
-  connectToDevTools: true
-})
-
-// Install the vue plugin
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient,
-  defaultOptions: {
-    $loadingKey: 'loading'
-  }
-})
 
 Vue.filter('truncate', function (value, length) {
   return value.length > length
@@ -77,14 +34,13 @@ Vue.filter('formatDateTimeAgo', function (date) {
 })
 
 Vue.use(Buefy)
-Vue.use(VueApollo)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  apolloProvider,
   components: { App },
   template: '<App/>',
+  apolloProvider: createProvider(),
   store
 })

@@ -1,31 +1,31 @@
-subscription getAgent($agentID: Int!) {
-  agent: Agent(where: {Id: {_eq: $agentID}}) {
-    BeaconInterval
-    ExternalIP
-    Hostname
-    InitialCheckin
-    InternalIP
-    Jitter
-    LastCheckin
-    Name
-    OperatingSystem
-    PID
-    StagingId
-    Username
-    ConsoleMessages {
-      Id
-      AgentTaskId
-      Type
-      Content
-      Display
-      Received
-      User {
-        Id
-        Username
+subscription getAgent($agentID: int!) {
+  agent: agent(where: {Id: {_eq: $agentID}}) {
+    beacon_interval
+    external_ip
+    hostname
+    initial_checkin
+    internal_ip
+    jitter
+    last_checkin
+    name
+    operating_system
+    pid
+    staging_id
+    username
+    console_messages {
+      id
+      agent_task_id
+      type
+      content
+      display
+      received
+      user {
+        id
+        username
       }
-      Agent {
-        Id
-        Name
+      agent {
+        id
+        name
       }
     }
   }

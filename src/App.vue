@@ -16,8 +16,8 @@
 import Navbar from './components/Navbar'
 import { mapState } from 'vuex'
 console.log('[App.vue] NodeJS Environment Setting: ' + process.env.NODE_ENV)
-console.log('[App.vue] API Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
-console.log('[App.vue] SocketIO Endpoint: ' + process.env.VUE_APP_SOCKETIO_ENDPOINT)
+console.log('[App.vue] Auth Endpoint: ' + process.env.VUE_APP_AUTH_ENDPOINT)
+console.log('[App.vue] GraphQL Endpoint: ' + process.env.VUE_APP_GRAPH_QL_ENDPOINT)
 export default {
   name: 'App',
   data () {

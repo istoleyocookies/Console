@@ -41,7 +41,8 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import axios from 'axios'
-console.log('[Login.vue] Endpoint: ' + process.env.VUE_APP_API_ENDPOINT)
+import { onLogin } from '../vue-apollo.js'
+
 export default {
   data () {
     return {
@@ -49,54 +50,30 @@ export default {
       password: null,
       error: false,
       errorMessage: null,
-      loginRunning: true
+      loginRunning: false
     }
   },
   computed: {
     ...mapState({
       userId: state => state.faction.userId,
       userRole: state => state.faction.userRole,
-      accessKeyId: state => state.faction.accessKeyId,
-      accessSecret: state => state.faction.accessSecret,
+      accessToken: state => state.faction.accessToken,
       connected: state => state.faction.connected,
       connectionStatus: state => state.faction.connectionStatus
     })
-  },
-  mounted () {
-    this.updateApiCookie()
   },
   methods: {
     ...mapActions([
       'loginUser',
       'clearLoginState'
     ]),
-    updateApiCookie () {
-      this.username = this.$cookies.get('username')
-      const userId = this.$cookies.get('user_id')
-      const userRole = this.$cookies.get('user_role')
-      const accessKey = this.$cookies.get('access_key')
-      console.log('[Login.vue:updateApiCookie] UserId from cookie: ' + userId)
-      console.log('[Login.vue:updateApiCookie] UserRole from cookie: ' + userRole)
-      console.log('[Login.vue:updateApiCookie] ApiKey from cookie: ' + accessKey)
-      if (accessKey != null) {
-        console.log('[Login.vue:updateApiCookie] Trying to login')
-        this.loginUser({
-          username: this.username,
-          userId: userId,
-          userRole: userRole,
-          accessKey: accessKey
-        })
-      } else {
-        this.loginRunning = false
-      }
-    },
     submitLogin () {
       this.loginRunning = true
       axios.defaults.withCredentials = true
       axios.post(('/api/v1/auth/login/'),
         {
-          'Username': this.username,
-          'Password': this.password
+          'username': this.username,
+          'password': this.password
         }).then(function (response) {
         if (response.data.success) {
           console.log('[Login.vue:submitLogin] Trying to login..')
@@ -104,17 +81,9 @@ export default {
           console.log('[Login.vue:submitLogin] Username: ' + response.data.username)
           console.log('[Login.vue:submitLogin] User Role: ' + response.data.user_role)
           console.log('[Login.vue:submitLogin] Access Key: ' + response.data.access_key)
-          var loginSuccess = this.loginUser({
-            username: response.data.username,
-            userId: response.data.user_id,
-            userRole: response.data.user_role,
-            accessKey: response.data.access_key
-          })
-          if (!loginSuccess) {
-            this.error = true
-            this.errorMessage = 'Error connecting to API'
-            this.loginRunning = false
-          }
+          onLogin(this.$apollo.getClient(), response.data.access_key)
+          this.loginUser(response.data)
+          this.redirect()
         } else {
           this.error = true
           this.errorMessage = response.data.Message

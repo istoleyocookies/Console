@@ -1,26 +1,26 @@
 subscription allAgents {
-    agents: Agent {
-        Admin
-        BeaconInterval
-        ExternalIP
-        Id
-        Hostname
-        InitialCheckin
-        InternalIP
-        Jitter
-        LastCheckin
-        Name
-        OperatingSystem
-        PID
-        Username
-        Visible
-        AgentType {
-            Name
-            Id
+   agents {
+        admin
+        beacon_interval
+        external_ip
+        id
+        hostname
+        initial_checkin
+        internal_ip
+        jitter
+        last_checkin
+        name
+        operating_system
+        pid
+        username
+        visible
+        agent_type {
+            name
+            id
         }
-        Transport {
-            Id
-            Name
+        transport {
+            id
+            name
         }
     }
 }

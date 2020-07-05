@@ -8,22 +8,33 @@ const faction = {
     connectionStatus: 'Disconnected from Faction API',
     connectionStatusMessage: null,
     loggedIn: false,
-    accessKeyId: null,
-    accessSecret: null,
+    accessToken: null,
     userId: null,
     username: null,
     notificationMessage: null,
     notificationType: null
   },
   mutations: {
+    websocketConnected: (state, data) => {
+      console.log('[vuex:websocketConnected] Connection established.')
+      state.connected = true
+      state.connectionStatus = 'Connected to Faction API'
+    },
+    websocketDisconnected: (state, data) => {
+      console.log('[vuex:websocketConnected] Connection established.')
+      state.connected = false
+      state.connectionStatus = 'Disconnected from Faction API'
+    },
     loginUser: (state, data) => {
-      console.log('[vuex:LoginUserMutation] Running with User Id: ' + data['userId'])
-      console.log('[vuex:LoginUserMutation] Running with User Role: ' + data['userRole'])
-      console.log('[vuex:LoginUserMutation] Running with username ' + data['username'])
-      if ((data['username'] && data['userId'] && data['userRole'])) {
-        state.username = data['username']
-        state.userId = data['userId']
-        state.userRole = data['userRole']
+      console.log('[vuex:LoginUserMutation] Running with User Id: ' + data.user_id)
+      console.log('[vuex:LoginUserMutation] Running with User Role: ' + data.user_role)
+      console.log('[vuex:LoginUserMutation] Running with username ' + data.username)
+      console.log('[vuex:LoginUserMutation] Running with Access Token ' + data.access_key)
+      if ((data.username && data.user_id && data.user_role)) {
+        state.username = data.username
+        state.userId = data.user_id
+        state.userRole = data.user_role
+        state.accessToken = data.accessToken
         state.loggedIn = true
       } else {
         console.log('[vuex:LoginUserMutation] Need both an Id and a Secret')
@@ -35,14 +46,12 @@ const faction = {
       state.username = null
       state.userId = null
       state.userRole = null
-      state.accessKeyId = null
-      state.accessSecret = null
+      state.accessToken = null
+      state.loggedIn = false
     }
   },
   actions: {
     loginUser: (context, data) => {
-      console.log('[vuex:LoginUser Action] - Running with Key Id: ' + data['keyId'])
-      console.log('[vuex:LoginUser Action] - Running with Secret: ' + data['secret'])
       context.commit('loginUser', data)
     },
     clearLoginState: (context) => {
