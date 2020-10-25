@@ -32,66 +32,66 @@
         <b-table
           :data='filteredPayloads'
           hoverable
-          >
+        >
           <template slot-scope="props">
             <b-table-column field='Id' label='ID' width='40' numeric sortable>
-              {{ props.row.Id }}
+              {{ props.row.id }}
             </b-table-column>
 
             <b-table-column field="Name" label="Name" sortable>
-              {{ props.row.Name }}
+              {{ props.row.name }}
             </b-table-column>
 
-            <b-table-column field="AgentType.Name" label="Type" sortable>
-              {{ props.row.AgentType.Name }}
+            <b-table-column field="AgentType.name" label="Type" sortable>
+              {{ props.row.agent_type.name }}
             </b-table-column>
 
-            <b-table-column field="Transport.Name" label="Transport" sortable>
-              {{ props.row.Transport.Name }}
+            <b-table-column field="Transport.name" label="Transport" sortable>
+              {{ props.row.transport.name }}
             </b-table-column>
 
-            <b-table-column field="OperatingSystem.Name" label="OS" sortable>
-              {{ props.row.OperatingSystem.Name }}
+            <b-table-column field="operating_system.name" label="OS" sortable>
+              {{ props.row.operating_system.name }}
             </b-table-column>
 
-            <b-table-column field="Architecture.Name" label="Arch" sortable>
-              {{ props.row.Architecture.Name }}
+            <b-table-column field="Architecture.name" label="Arch" sortable>
+              {{ props.row.architecture.name }}
             </b-table-column>
 
-            <b-table-column field="Configuration.Name" label="Configuration" sortable>
-              {{ props.row.Configuration.Name }}
+            <b-table-column field="Configuration.name" label="Configuration" sortable>
+              {{ props.row.configuration.name }}
             </b-table-column>
 
-            <b-table-column field="Format.Name" label="Format" sortable>
-              {{ props.row.Format.Name }}
+            <b-table-column field="Format.name" label="Format" sortable>
+              {{ props.row.format.name }}
             </b-table-column>
 
             <b-table-column field="BeaconInterval" label="Beacon Interval" sortable>
-              {{ props.row.BeaconInterval }}
+              {{ props.row.beacon_interval }}
             </b-table-column>
 
             <b-table-column field="Jitter" label="Jitter" sortable>
-              {{ props.row.Jitter }}
+              {{ props.row.jitter }}
             </b-table-column>
 
             <b-table-column field="ExpirationDate" label="Expiration Date" sortable>
-              {{ props.row.ExpirationDate | formatDateTime }}
+              {{ props.row.expiration_date | formatDateTime }}
             </b-table-column>
 
             <b-table-column field='Enabled' label='Enabled' sortable>
-                <b-checkbox v-model="props.row.Enabled" @click.native="togglePayload(props.row.Id, $event)"></b-checkbox>
+              <b-checkbox v-model="props.row.enabled" @click.native="togglePayload(props.row.id, $event)"></b-checkbox>
             </b-table-column>
 
             <b-table-column field='Hide' label='Hide' centered>
-              <button class="button is-danger is-small is-rounded" @click="hidePayload(props.row.Id)">
+              <button class="button is-danger is-small is-rounded" @click="hidePayload(props.row.id)">
                 <b-icon icon="delete" size="is-small"></b-icon>
               </button>
             </b-table-column>
 
             <b-table-column field='Download' label='Download'>
               <!-- We thrown the name on the end of this link to bust caching -->
-              <a :href="apiEndpoint + '/payload/' + props.row.Id + '/file/' + '?' + props.row.Name">
-                <button :disabled="!props.row.Built" class="button is-information">
+              <a :href="apiEndpoint + '/payload/' + props.row.id + '/file/' + '?' + props.row.name">
+                <button :disabled="!props.row.built" class="button is-information">
                   <b-icon icon="download"></b-icon>
                 </button>
               </a>
@@ -106,142 +106,141 @@
       </div>
       <b-modal :active.sync="isNewPayloadModalActive" scroll="keep">
         <div class="modal-card" style="width: auto">
-            <header class="modal-card-head">
-                <p class="modal-card-title">New Payload</p>
-            </header>
-            <section class="modal-card-body">
-              <b-field label="Agent Type">
-                  <b-select placeholder="Select an Agent Type" v-model="newPayloadAgentType">
+          <header class="modal-card-head">
+            <p class="modal-card-title">New Payload</p>
+          </header>
+          <section class="modal-card-body">
+            <b-field label="Agent Type">
+              <b-select placeholder="Select an Agent Type" v-model="newPayloadAgentType">
+                <option
+                  v-for="agentType in agentTypes"
+                  :value="agentType"
+                  :key="agentType.id">
+                  {{ agentType.name }}
+                </option>
+              </b-select>
+            </b-field>
+
+            <b-field label="Description" >
+              <b-input placeholder="Description" v-model="newPayloadDescription">
+              </b-input>
+            </b-field>
+            <div class="columns" v-if="newPayloadAgentType">
+              <div class="column">
+                <b-field label="Architecture">
+                  <b-select placeholder="Select an Architecture" v-model="newPayloadArchitecture">
                     <option
-                      v-for="agentType in agentTypes"
-                      :value="agentType"
-                      :key="agentType.Id">
-                      {{ agentType.Name }}
+                      v-for="architecture in newPayloadAgentType.agent_type_architectures"
+                      :value="architecture"
+                      :key="architecture.id">
+                      {{ architecture.name }}
                     </option>
                   </b-select>
-              </b-field>
-
-              <b-field label="Description" >
-                <b-input placeholder="Description" v-model="newPayloadDescription">
-                </b-input>
-              </b-field>
-              <div class="columns" v-if="newPayloadAgentType">
-                <div class="column">
-                  <b-field label="Architecture">
-                    <b-select placeholder="Select an Architecture" v-model="newPayloadArchitecture">
-                      <option
-                        v-for="architecture in newPayloadAgentType.Architectures"
-                        :value="architecture"
-                        :key="architecture.Id">
-                        {{ architecture.Name }}
-                      </option>
-                    </b-select>
-                  </b-field>
-                  <b-field label="Version">
-                    <b-select placeholder="Select an Version" v-model="newPayloadVersion">
-                      <option
-                        v-for="version in newPayloadAgentType.Versions"
-                        :value="version"
-                        :key="version.Id">
-                        {{ version.Name }}
-                      </option>
-                    </b-select>
-                  </b-field>
-                  <b-field label="Operating System">
-                    <b-select placeholder="Select an Operating System" v-model="newPayloadOperatingSystem">
-                      <option
-                        v-for="operatingsystem in newPayloadAgentType.OperatingSystems"
-                        :value="operatingsystem"
-                        :key="operatingsystem.Id">
-                        {{ operatingsystem.Name }}
-                      </option>
-                    </b-select>
-                  </b-field>
-                  <b-field label="Configuration">
-                    <b-select placeholder="Select an Configuration" v-model="newPayloadConfiguration">
-                      <option
-                        v-for="configuration in newPayloadAgentType.Configurations"
-                        :value="configuration"
-                        :key="configuration.Id">
-                        {{ configuration.Name }}
-                      </option>
-                    </b-select>
-                  </b-field>
-                  <b-field label="Format">
-                      <b-select placeholder="Select an Payload Format" v-model="newPayloadFormat">
-                        <option
-                          v-for="format in newPayloadAgentType.Formats"
-                          :value="format"
-                          :key="format.Id">
-                          {{ format.Name }}
-                        </option>
-                      </b-select>
-                  </b-field>
-                </div>
-                <div class="column">
-                  <b-field label="Agent Transport">
-                    <b-select placeholder="Select an Agent Transport Type"
-                          v-model="newPayloadTransport">
-                      <optgroup
-                        v-for="agentTransport in newPayloadAgentType.AgentTransports"
-                        :value="agentTransport"
-                        :key="agentTransport.Id"
-                        :label="agentTransport.Name"
-
-                      >
-                        <option
-                          v-for="transport in agentTransport.Available"
-                          :value="transport"
-                          :key="transport.Id">
-                          {{ transport.Name }}
-                        </option>
-                      </optgroup>
-                    </b-select>
-                  </b-field>
-
-                  <b-field label="Beacon Interval">
-                      <b-input
-                          v-model="newPayloadBeaconInterval"
-                          type="number"
-                          min="0"
-                          required>
-                      </b-input>
-                  </b-field>
-
-                  <b-field label="Jitter">
-                      <b-input
-                          v-model="newPayloadJitter"
-                          type="number"
-                          min="0"
-                          max="1"
-                          step="0.1"
-                          required>
-                      </b-input>
-                  </b-field>
-
-                  <b-field label="Expiration Date">
-                      <b-datepicker
-                        position="is-top-right"
-                        v-model="newPayloadExpirationDate">
-                        <button class="button is-danger"
-                            @click="newPayloadExpirationDate = null">
-                            <b-icon icon="close"></b-icon>
-                            <span>Clear</span>
-                        </button>
-                      </b-datepicker>
-                  </b-field>
-                  <b-field label="Debug">
-                      <b-switch
-                        v-model="newPayloadDebug">
-                      </b-switch>
-                  </b-field>
-                </div>
+                </b-field>
+                <b-field label="Version">
+                  <b-select placeholder="Select an Version" v-model="newPayloadVersion">
+                    <option
+                      v-for="version in newPayloadAgentType.agent_type_versions"
+                      :value="version"
+                      :key="version.id">
+                      {{ version.name }}
+                    </option>
+                  </b-select>
+                </b-field>
+                <b-field label="Operating System">
+                  <b-select placeholder="Select an Operating System" v-model="newPayloadOperatingSystem">
+                    <option
+                      v-for="operating_system in newPayloadAgentType.agent_type_operating_systems"
+                      :value="operating_system"
+                      :key="operating_system.id">
+                      {{ operating_system.name }}
+                    </option>
+                  </b-select>
+                </b-field>
+                <b-field label="Configuration">
+                  <b-select placeholder="Select an Configuration" v-model="newPayloadConfiguration">
+                    <option
+                      v-for="configuration in newPayloadAgentType.agent_type_configurations"
+                      :value="configuration"
+                      :key="configuration.id">
+                      {{ configuration.name }}
+                    </option>
+                  </b-select>
+                </b-field>
+                <b-field label="Format">
+                  <b-select placeholder="Select an Payload Format" v-model="newPayloadFormat">
+                    <option
+                      v-for="format in newPayloadAgentType.agent_type_formats"
+                      :value="format"
+                      :key="format.id">
+                      {{ format.name }}
+                    </option>
+                  </b-select>
+                </b-field>
               </div>
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-primary" @click="createPayload">Create Payload</button>
-            </footer>
-          </div>
+              <div class="column">
+                <b-field label="Agent Transport">
+                  <b-select placeholder="Select an Agent Transport Type"
+                            v-model="newPayloadTransport">
+                    <optgroup
+                      v-for="agentTransport in newPayloadAgentType.agent_transport_types"
+                      :value="agentTransport"
+                      :key="agentTransport.id"
+                      :label="agentTransport.name"
+                    >
+                      <option
+                        v-for="transport in agentTransport.available_transports"
+                        :value="transport"
+                        :key="transport.id">
+                        {{ transport.name }}
+                      </option>
+                    </optgroup>
+                  </b-select>
+                </b-field>
+
+                <b-field label="Beacon Interval">
+                  <b-input
+                    v-model="newPayloadBeaconInterval"
+                    type="number"
+                    min="0"
+                    required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Jitter">
+                  <b-input
+                    v-model="newPayloadJitter"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.1"
+                    required>
+                  </b-input>
+                </b-field>
+
+                <b-field label="Expiration Date">
+                  <b-datepicker
+                    position="is-top-right"
+                    v-model="newPayloadExpirationDate">
+                    <button class="button is-danger"
+                            @click="newPayloadExpirationDate = null">
+                      <b-icon icon="close"></b-icon>
+                      <span>Clear</span>
+                    </button>
+                  </b-datepicker>
+                </b-field>
+                <b-field label="Debug">
+                  <b-switch
+                    v-model="newPayloadDebug">
+                  </b-switch>
+                </b-field>
+              </div>
+            </div>
+          </section>
+          <footer class="modal-card-foot">
+            <button class="button is-primary" @click="createPayload">Create Payload</button>
+          </footer>
+        </div>
       </b-modal>
       <b-modal :active.sync="isDevPayloadModalActive" scroll="keep">
         <div class="modal-card" style="width: auto">
@@ -259,9 +258,9 @@
 }
             </pre>
           </section>
-<!--          <footer class="modal-card-foot">-->
-<!--            <button class="button is-primary" @click="clearNewDevPayloadValues">Dismiss</button>-->
-<!--          </footer>-->
+          <!--          <footer class="modal-card-foot">-->
+          <!--            <button class="button is-primary" @click="clearNewDevPayloadValues">Dismiss</button>-->
+          <!--          </footer>-->
         </div>
       </b-modal>
     </div>
@@ -276,7 +275,7 @@ export default {
   name: 'payloads',
   data () {
     return {
-      apiEndpoint: process.env.VUE_APP_API_ENDPOINT,
+      apiEndpoint: process.env.vUE_APP_API_ENDPOINT,
       payloads: [],
       isDevPayloadModalActive: null,
       devPayloadKey: null,
@@ -322,7 +321,7 @@ export default {
         return this.payloads
       } else {
         return this.payloads.filter(function (payload) {
-          if (payload.Visible) {
+          if (payload.visible) {
             return payload
           }
         })
@@ -369,42 +368,42 @@ export default {
 
       let newPayloadFormatId = 0
       if (this.newPayloadFormat) {
-        newPayloadFormatId = this.newPayloadFormat.Id
+        newPayloadFormatId = this.newPayloadFormat.id
       }
 
       let newPayloadTransportId = 0
       if (this.newPayloadTransport) {
-        newPayloadTransportId = this.newPayloadTransport.Id
+        newPayloadTransportId = this.newPayloadTransport.id
       }
 
       let newPayloadOperatingSystemId = 0
       if (this.newPayloadOperatingSystem) {
-        newPayloadOperatingSystemId = this.newPayloadOperatingSystem.Id
+        newPayloadOperatingSystemId = this.newPayloadOperatingSystem.id
       }
 
       let newPayloadArchitectureId = 0
       if (this.newPayloadArchitecture) {
-        newPayloadArchitectureId = this.newPayloadArchitecture.Id
+        newPayloadArchitectureId = this.newPayloadArchitecture.id
       }
 
       let newPayloadVersionId = 0
       if (this.newPayloadVersion) {
-        newPayloadVersionId = this.newPayloadVersion.Id
+        newPayloadVersionId = this.newPayloadVersion.id
       }
 
       let newPayloadConfigurationId = 0
       if (this.newPayloadConfiguration) {
-        newPayloadConfigurationId = this.newPayloadConfiguration.Id
+        newPayloadConfigurationId = this.newPayloadConfiguration.id
       }
 
       this.$apollo.mutate({
         mutation: require('../graphql/payload-mutation-create.graphql'),
         variables: {
           'description': this.newPayloadDescription,
-          'agentTypeId': this.newPayloadAgentType.Id,
+          'agentTypeId': this.newPayloadAgentType.id,
           'formatId': newPayloadFormatId,
           'transportId': newPayloadTransportId,
-          'operatingSystemId': newPayloadOperatingSystemId,
+          'operating_systemId': newPayloadOperatingSystemId,
           'architectureId': newPayloadArchitectureId,
           'versionId': newPayloadVersionId,
           'configurationId': newPayloadConfigurationId,
@@ -437,13 +436,13 @@ export default {
     // },
     // getAgentTypes () {
     //   axios.defaults.withCredentials = true
-    //   axios.get((process.env.VUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
+    //   axios.get((process.env.vUE_APP_API_ENDPOINT + '/agent/type/?token=' + this.accessKeyId + ':' + this.accessSecret)
     //   ).then(function (response) {
-    //     if (!response.data.Success) {
+    //     if (!response.data.success) {
     //       this.error = true
-    //       this.message = response.data.Message
+    //       this.message = response.data.message
     //     } else {
-    //       this.availableAgentTypes = response.data.Results
+    //       this.availableAgentTypes = response.data.results
     //     }
     //     this.proccessing = false
     //   }.bind(this))
@@ -491,12 +490,12 @@ export default {
     newPayloadAgentType () {
       console.log('NewPayloadAgentType Changed')
       if (this.newPayloadAgentType != null) {
-        this.newPayloadFormat = this.newPayloadAgentType.Formats[0]
-        this.newPayloadTransport = this.newPayloadAgentType.AgentTransports[0].Available[0]
-        this.newPayloadOperatingSystem = this.newPayloadAgentType.OperatingSystems[0]
-        this.newPayloadArchitecture = this.newPayloadAgentType.Architectures[0]
-        this.newPayloadVersion = this.newPayloadAgentType.Versions[0]
-        this.newPayloadConfiguration = this.newPayloadAgentType.Configurations[0]
+        this.newPayloadFormat = this.newPayloadAgentType.agent_type_formats[0]
+        this.newPayloadTransport = this.newPayloadAgentType.agent_transport_types[0].available_transports[0]
+        this.newPayloadOperatingSystem = this.newPayloadAgentType.agent_type_operating_systems[0]
+        this.newPayloadArchitecture = this.newPayloadAgentType.agent_type_architectures[0]
+        this.newPayloadVersion = this.newPayloadAgentType.agent_type_versions[0]
+        this.newPayloadConfiguration = this.newPayloadAgentType.agent_type_configurations[0]
         this.newPayloadBeaconInterval = 5
         this.newPayloadJitter = 0
       }
@@ -504,7 +503,8 @@ export default {
   },
   apollo: {
     agentTypes: {
-      query: require('../graphql/agentType-query-all.graphql')
+      query: require('../graphql/agentType-query-all.graphql'),
+      update: data => data.agent_types
     },
     $subscribe: {
       payloads: {

@@ -1,46 +1,46 @@
 subscription all_payloads {
-    payloads {
+  payloads {
+    id
+    name
+    description
+    staging_key
+    configuration: agent_type_configuration {
+      id
+      name
+    }
+    architecture: agent_type_architecture {
+      id
+      name
+    }
+    operating_system: agent_type_operating_system {
+      id
+      name
+    }
+    format: agent_type_format {
+      id
+      name
+    }
+    transport {
+      id
+      name
+      transport_type
+    }
+    created
+    built
+    last_downloaded
+    beacon_interval
+    jitter
+    expiration_date
+    enabled
+    visible
+    agent_type {
+      id
+      name
+      development
+      agent_transport_types {
         id
         name
-        description
-        key
-        agent_type {
-            id
-            name
-            development
-        }
-        configuration: agent_type_configuration {
-            id
-            name
-        }
-        architecture: agent_type_architecture {
-            id
-            name
-        }
-        operating_system: agent_type_operating_system {
-            id
-            name
-        }
-        format: agent_type_format {
-            id
-            name
-        }
-        agent_transport: agent_transport_type {
-            id
-            name
-        }
-        transport {
-            id
-            name
-            transport_type
-        }
-        created
-        built
-        last_downloaded
-        beacon_interval
-        jitter
-        expiration_date
-        enabled
-        visible
+      }
     }
+  }
 }
