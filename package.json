@@ -13,7 +13,7 @@
     "axios": "^0.21.0",
     "buefy": "^0.9.4",
     "bulma-calendar": "^6.0.9",
-    "core-js": "^3.6.5",
+    "core-js": "^3.7.0",
     "moment": "^2.29.1",
     "socket.io-client": "^3.0.0",
     "source-code-pro": "git://github.com/adobe-fonts/source-code-pro.git#release",
