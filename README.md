@@ -9,7 +9,7 @@
 This is the web interface for Faction C2. It is built using [Vue](https://vuejs.org/)
 
 ## Installing and Running
-This is installed by default through the stanard [Faction Install Process](https://www.factionc2.com/docs/#installing-faction). You should only have to manually install this if you'd like to modify it.
+This is installed by default through the standard [Faction Install Process](https://www.factionc2.com/docs/#installing-faction). You should only have to manually install this if you'd like to modify it.
 
 To install this manually:
 
@@ -19,7 +19,7 @@ To install this manually:
 
 This will start up a development server running the console
 
-By default, in a development environment, the console expects to be able to contact the API at http://localhost:5000/api/v1/, which means you'll have to run the API locally. If you'd like to change this behavior, edit the `.env.development` file.
+The console contacts the API at http://localhost:5000/api/v1/ (in the dev build) which means you'll have to run the API locally. If you'd like to change this behavior, edit the `.env.development` file.
 
 ## Issues
 Please submit any issues you have with Faction [here](https://github.com/FactionC2/Faction/issues) and use the provided templates if applicable.
